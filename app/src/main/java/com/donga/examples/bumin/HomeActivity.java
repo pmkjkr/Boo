@@ -13,13 +13,20 @@ import butterknife.OnClick;
 public class HomeActivity extends AppCompatActivity {
 
     @OnClick(R.id.menu_res)
-    void menu_res(){
+    void menu_res() {
         Intent intent = new Intent(getApplicationContext(), ResActivity.class);
         startActivity(intent);
     }
+
     @OnClick(R.id.menu_bo)
-    void menu_bo(){
+    void menu_bo() {
         Intent intent = new Intent(getApplicationContext(), BoActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.menu_room)
+    void menu_room() {
+        Intent intent = new Intent(getApplicationContext(), RoomActivity.class);
         startActivity(intent);
     }
 

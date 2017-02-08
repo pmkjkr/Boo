@@ -18,22 +18,22 @@ import butterknife.ButterKnife;
 /**
  * Created by rhfoq on 2017-02-08.
  */
-public class BoActivity extends AppCompatActivity
+public class RoomActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.toolbar_bo)
+    @BindView(R.id.toolbar_room)
     Toolbar toolbar;
-    @BindView(R.id.drawer_layout_bo)
+    @BindView(R.id.drawer_layout_room)
     DrawerLayout drawer;
-    @BindView(R.id.nav_view_bo)
+    @BindView(R.id.nav_view_room)
     NavigationView navigationView;
-    @BindView(R.id.list_bo)
+    @BindView(R.id.list_room)
     ListView listview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bo);
+        setContentView(R.layout.activity_room);
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
 
@@ -44,27 +44,26 @@ public class BoActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        BoListViewAdapter adapter;
+        RoomListViewAdapter adapter;
 
         // Adapter 생성
-        adapter = new BoListViewAdapter();
+        adapter = new RoomListViewAdapter();
 
         // 리스트뷰 참조 및 Adapter달기
         listview.setAdapter(adapter);
         // 리스트뷰 아이템 추가
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.bo_notice), "공지사항");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.bo_event), "행사모집");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.bo_hag), "학사정보");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.bo_bo), "자유게시판");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.bo_job), "알바정보");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.bo_market), "벼룩시장");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.bo_lost), "분실물센터");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.bo_circle), "동아리센터");
+        adapter.addItem("한림도서관 그룹스터디실(4층)","108","108","0","100%");
+        adapter.addItem("한림도서관 열람실A(5층)","275","4","271","1.45%");
+        adapter.addItem("한림도서관 열람실B(5층)","342","3","339","0.88%");
+        adapter.addItem("한림도서관 열람실C(5층)","317","3","314","0.95%");
+        adapter.addItem("한림도서관 열람실D(5층)","168","0","168","0%");
+        adapter.addItem("사회대 열람실1","215","0","215","0%");
+        adapter.addItem("사회대 열람실2","215","0","215","0%");
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_bo);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_room);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -114,7 +113,7 @@ public class BoActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_bo);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_room);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

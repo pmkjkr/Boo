@@ -10,8 +10,14 @@ import butterknife.OnClick;
 public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.login_bt)
-    void loginButton(){
+    void loginButton() {
         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.reg_bt)
+    void regButton() {
+        Intent intent = new Intent(getApplicationContext(), RegActivity.class);
         startActivity(intent);
     }
 
