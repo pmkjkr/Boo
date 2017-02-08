@@ -17,6 +17,11 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), ResActivity.class);
         startActivity(intent);
     }
+    @OnClick(R.id.menu_bo)
+    void menu_bo(){
+        Intent intent = new Intent(getApplicationContext(), BoActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
