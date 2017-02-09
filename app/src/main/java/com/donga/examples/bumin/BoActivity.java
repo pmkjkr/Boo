@@ -10,7 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +33,7 @@ public class BoActivity extends AppCompatActivity
     NavigationView navigationView;
     @BindView(R.id.list_bo)
     ListView listview;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,7 @@ public class BoActivity extends AppCompatActivity
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.bo_lost), "분실물센터");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.bo_circle), "동아리센터");
     }
+
 
     @Override
     public void onBackPressed() {

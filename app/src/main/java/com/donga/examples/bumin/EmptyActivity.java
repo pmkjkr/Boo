@@ -2,7 +2,6 @@ package com.donga.examples.bumin;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -10,30 +9,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by rhfoq on 2017-02-08.
+ * Created by rhfoq on 2017-02-09.
  */
-public class RoomActivity extends AppCompatActivity
+public class EmptyActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.toolbar_room)
+    @BindView(R.id.toolbar_empty)
     Toolbar toolbar;
-    @BindView(R.id.drawer_layout_room)
+    @BindView(R.id.drawer_layout_empty)
     DrawerLayout drawer;
-    @BindView(R.id.nav_view_room)
+    @BindView(R.id.nav_view_empty)
     NavigationView navigationView;
-    @BindView(R.id.list_room)
-    ListView listview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_room);
+        setContentView(R.layout.activity_empty);
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
 
@@ -43,33 +39,11 @@ public class RoomActivity extends AppCompatActivity
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-
-        RoomListViewAdapter adapter;
-
-        // Adapter 생성
-        adapter = new RoomListViewAdapter();
-
-        // 리스트뷰 참조 및 Adapter달기
-        listview.setAdapter(adapter);
-        // 리스트뷰 아이템 추가
-        adapter.addItem("한림도서관 그룹스터디실(4층)","108","108","0","100%");
-        adapter.addItem("한림도서관 열람실A(5층)","275","4","271","1.45%");
-        adapter.addItem("한림도서관 열람실B(5층)","342","3","339","0.88%");
-        adapter.addItem("한림도서관 열람실C(5층)","317","3","314","0.95%");
-        adapter.addItem("한림도서관 열람실D(5층)","168","0","168","0%");
-        adapter.addItem("사회대 열람실1","215","0","215","0%");
-        adapter.addItem("사회대 열람실2","215","0","215","0%");
-        adapter.addItem("사회대 열람실2","215","0","215","0%");
-        adapter.addItem("사회대 열람실2","215","0","215","0%");
-        adapter.addItem("사회대 열람실2","215","0","215","0%");
-        adapter.addItem("사회대 열람실2","215","0","215","0%");
-        adapter.addItem("사회대 열람실2","215","0","215","0%");
-
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_room);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_empty);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -119,7 +93,7 @@ public class RoomActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_room);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_empty);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
