@@ -2,6 +2,7 @@ package com.donga.examples.bumin;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -10,7 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +36,8 @@ public class ResActivity extends AppCompatActivity
     DrawerLayout drawer;
     @BindView(R.id.nav_view_res)
     NavigationView navigationView;
+    @BindView(R.id.date_text)
+    TextView date_text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +52,19 @@ public class ResActivity extends AppCompatActivity
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        SimpleDateFormat msimpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
+        Date currentTime = new Date();
+        String now = msimpleDateFormat.format(currentTime);
+
+        date_text.setText(now);
+        date_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment newFragment = new CalenderFragment();
+                newFragment.show(getSupportFragmentManager(), "Date Picker");
+            }
+        });
     }
 
     @Override
