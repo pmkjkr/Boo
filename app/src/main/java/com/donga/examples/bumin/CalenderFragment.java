@@ -28,7 +28,7 @@ public class CalenderFragment extends DialogFragment implements DatePickerDialog
         return new DatePickerDialog(getActivity(), this, year, month, date);
     }
 
-    //버튼에 선택한 날짜 나타내기
+    //텍스트에 선택한 날짜 나타내기
     @Override
     public void onDateSet(DatePicker view, int year, int month, int date) {
         TextView textView = (TextView)getActivity().findViewById(R.id.date_text);

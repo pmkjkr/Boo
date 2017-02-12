@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/back"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:background="@drawable/blo"
+            android:gravity="center_vertical|center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/boo" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/menu_res"
+                android:layout_width="0dp"
+                android:layout_height="140dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_weight="0.6"
+                android:background="#ebd14d"
+                android:text="식당"
+                android:textColor="#fff"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/menu_room"
+                android:layout_width="0dp"
+                android:layout_height="140dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_weight="0.4"
+                android:background="#797979"
+                android:text="열람실\u00b7전산실"
+                android:textColor="#fff"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/menu_sche"
+                android:layout_width="0dp"
+                android:layout_height="140dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_weight="0.3"
+                android:background="#eb4c66"
+                android:text="시간표"
+                android:textColor="#fff"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/menu_empty"
+                android:layout_width="0dp"
+                android:layout_height="140dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_weight="0.7"
+                android:background="#2d3e50"
+                android:text="빈강"
+                android:textColor="#fff"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/menu_party"
+                android:layout_width="0dp"
+                android:layout_height="140dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_weight="0.5"
+                android:background="#1bbc96"
+                android:text="파티모집"
+                android:textColor="#fff"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/menu_site"
+                android:layout_width="0dp"
+                android:layout_height="140dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_weight="0.5"
+                android:background="#1863a2"
+                android:text="사이트"
+                android:textColor="#fff"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

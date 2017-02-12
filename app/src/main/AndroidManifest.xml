@@ -28,9 +28,6 @@
             android:name=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".BoActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
             android:name=".RoomActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity

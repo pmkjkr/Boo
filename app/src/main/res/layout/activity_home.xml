@@ -1,82 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:paddingTop="40dp"
-        android:paddingBottom="40dp"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:background="#000"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/menu_res"
-            android:text="식당"
-            android:textColor="#fff"
-            android:textSize="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/menu_bo"
-            android:text="게시판"
-            android:layout_below="@id/menu_res"
-            android:textColor="#fff"
-            android:textSize="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/menu_room"
-            android:text="열람실\u00b7전산실"
-            android:layout_below="@id/menu_bo"
-            android:textColor="#fff"
-            android:textSize="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/menu_sche"
-            android:text="시간표"
-            android:layout_below="@id/menu_room"
-            android:textColor="#fff"
-            android:textSize="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/menu_empty"
-            android:text="빈강"
-            android:layout_below="@id/menu_sche"
-            android:textColor="#fff"
-            android:textSize="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/menu_party"
-            android:text="파티모집"
-            android:layout_below="@id/menu_empty"
-            android:textColor="#fff"
-            android:textSize="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/team"
-            android:text="개발팀"
-            android:textColor="#fff"
-            android:textSize="20dp"
-            android:layout_alignParentBottom="true" />
-    </RelativeLayout>
-</LinearLayout>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".HomeActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/content_home" />
+
+</android.support.design.widget.CoordinatorLayout>
