@@ -36,7 +36,7 @@
                 android:layout_height="140dp"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_weight="0.6"
-                android:background="#ebd14d"
+                android:background="#dac247"
                 android:text="식당"
                 android:textColor="#fff"
                 android:textSize="18dp"

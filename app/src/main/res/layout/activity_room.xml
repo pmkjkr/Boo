@@ -25,8 +25,15 @@
                 android:id="@+id/toolbar_room"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="열람실\u00b7전산실"
+                    android:textSize="20dp"
+                    android:textColor="#ee5b6f"
+                    android:textStyle="bold" />
+            </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
 
