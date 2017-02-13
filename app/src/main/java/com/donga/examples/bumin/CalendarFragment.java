@@ -16,7 +16,7 @@ import java.util.Calendar;
 /**
  * Created by kim on 16. 8. 10.
  */
-public class CalenderFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class CalendarFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class CalenderFragment extends DialogFragment implements DatePickerDialog
         int month = c.get(Calendar.MONTH);
         int date = c.get(Calendar.DATE);
 
-        return new DatePickerDialog(getActivity(), this, year, month, date);
+        return new DatePickerDialog(getActivity(), R.style.DialogTheme, this, year, month, date);
     }
 
     //텍스트에 선택한 날짜 나타내기
