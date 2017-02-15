@@ -12,6 +12,8 @@ import butterknife.OnClick;
  */
 public class RegActivity extends AppCompatActivity {
 
+
+
     @OnClick(R.id.register)
     void register() {
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);

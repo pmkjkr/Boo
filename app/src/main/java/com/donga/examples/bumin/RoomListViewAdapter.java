@@ -1,7 +1,9 @@
 package com.donga.examples.bumin;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by rhfoq on 2017-02-08.
@@ -51,12 +55,26 @@ public class RoomListViewAdapter extends BaseAdapter {
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         RoomListViewItem listViewItem = listViewItemList.get(position);
 
+
+
+
+//        String msg1 = text_room5.getText().toString();
+//        String regex = "^100+@$";
+//        if(validateEmail(text_room5.getText().toString())){
+        if(50.0<=Float.parseFloat(listViewItem.getTitle5())&&Float.parseFloat(listViewItem.getTitle5())<=100.0){
+            Log.i("validated"+pos, text_room5.getText().toString());
+            text_room5.setTextColor(Color.RED);
+
+        }else{
+            Log.i("notval"+pos, text_room5.getText().toString());
+        }
+
         // 아이템 내 각 위젯에 데이터 반영
         text_room1.setText(listViewItem.getTitle1());
         text_room2.setText(listViewItem.getTitle2());
         text_room3.setText(listViewItem.getTitle3());
         text_room4.setText(listViewItem.getTitle4());
-        text_room5.setText(listViewItem.getTitle5());
+        text_room5.setText(listViewItem.getTitle5()+"%");
 
         return convertView;
     }
@@ -85,4 +103,10 @@ public class RoomListViewAdapter extends BaseAdapter {
 
         listViewItemList.add(item);
     }
+
+//    public static boolean validateEmail(String emailStr) {
+//        final Pattern VALID_PERCENT_REGEX = Pattern.compile("100%");
+//        Matcher matcher = VALID_PERCENT_REGEX.matcher(emailStr);
+//        return matcher.find();
+//    }
 }

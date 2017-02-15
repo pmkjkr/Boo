@@ -3,4 +3,6 @@
     <color name="colorPrimary">#fff</color>
     <color name="colorPrimaryDark">#ef6b7d</color>
     <color name="colorAccent">#ee5b6f</color>
+
+    <color name="Red">#FF0000</color>
 </resources>

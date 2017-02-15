@@ -1,6 +1,8 @@
 package com.donga.examples.bumin;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -11,8 +13,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.LinearLayout;
 
 import butterknife.BindView;
@@ -49,6 +53,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         startActivity(intent);
     }
 
+    @OnClick(R.id.menu_stu)
+    void menu_stu() {
+        Intent intent = new Intent(getApplicationContext(), StudentActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,10 +73,28 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView.setNavigationItemSelectedListener(this);
 
+        if (getIntent().getExtras() != null) {
+            Log.i("getExtras", getIntent().getExtras().getString("contents"));
+            Intent intent = new Intent(this, AlertDialogActivity.class);
+            Bundle bun = new Bundle();
+            bun.putString("contents", getIntent().getExtras().getString("contents"));
+            intent.putExtras(bun);
+            startActivity(intent);
+        }
+
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.back);
         linearLayout.getBackground().setAlpha(90);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("LOGIN", Context.MODE_PRIVATE);
+        int stuID = sharedPreferences.getInt("stuID", 0);
+        Log.i("HomeActivity", "" + stuID);
+
+        SharedPreferences sharedPreferences3 = getSharedPreferences("LOGIN3", Context.MODE_PRIVATE);
+        String contents = sharedPreferences3.getString("contents", "");
+        Log.i("HomeActivityTEST", "" + contents);
+
     }
+
 
     @Override
     public void onBackPressed() {

@@ -1,5 +1,6 @@
 package com.donga.examples.bumin;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
@@ -8,22 +9,35 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import com.donga.examples.bumin.retrofit.retrofitMeal.Interface_meal;
+import com.donga.examples.bumin.retrofit.retrofitMeal.Master3;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by rhfoq on 2017-02-08.
  */
 public class ResActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private ProgressDialog mProgressDialog;
 
     @BindView(R.id.toolbar_res)
     Toolbar toolbar;
@@ -33,6 +47,13 @@ public class ResActivity extends AppCompatActivity
     NavigationView navigationView;
     @BindView(R.id.date_text)
     TextView date_text;
+
+    @BindView(R.id.guk)
+    TextView guk;
+    @BindView(R.id.gang)
+    TextView gang;
+    @BindView(R.id.bumin)
+    TextView bumin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +68,8 @@ public class ResActivity extends AppCompatActivity
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        retrofit();
 
         SimpleDateFormat msimpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
         Date currentTime = new Date();
@@ -117,5 +140,59 @@ public class ResActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_res);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void retrofit(){
+        showProgressDialog();
+
+        SimpleDateFormat msimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date currentTime = new Date();
+        String nowTime = msimpleDateFormat.format(currentTime);
+
+        Retrofit client = new Retrofit.Builder().baseUrl(getString(R.string.retrofit_url))
+                .addConverterFactory(GsonConverterFactory.create()).build();
+        Interface_meal meal = client.create(Interface_meal.class);
+        retrofit2.Call<Master3> call3 = meal.getMeal(nowTime);
+        call3.enqueue(new Callback<Master3>() {
+            @Override
+            public void onResponse(Call<Master3> call, Response<Master3> response) {
+                String source_guk = response.body().getResult_body().getInter();
+                guk.setText(Html.fromHtml(source_guk));
+                guk.setMovementMethod(LinkMovementMethod.getInstance());
+
+                String source_bumin = response.body().getResult_body().getBumin_kyo();
+                bumin.setText(Html.fromHtml(source_bumin));
+                bumin.setMovementMethod(LinkMovementMethod.getInstance());
+
+                String source_gang = response.body().getResult_body().getGang();
+                gang.setText(Html.fromHtml(source_gang));
+                gang.setMovementMethod(LinkMovementMethod.getInstance());
+
+                hideProgressDialog();
+            }
+
+            @Override
+            public void onFailure(Call<Master3> call, Throwable t) {
+                hideProgressDialog();
+                Log.i("CALL3", "onFailure");
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage(getString(R.string.loading));
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.hide();
+        }
     }
 }

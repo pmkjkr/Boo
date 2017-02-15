@@ -31,7 +31,19 @@
                     android:textSize="20dp"
                     android:textColor="#ee5b6f"
                     android:textStyle="bold" />
+
+
+                <Button
+                    android:text="Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/button2"
+                    android:layout_weight="1" />
+
+
             </android.support.v7.widget.Toolbar>
+
+
 
         </android.support.design.widget.AppBarLayout>
 
