@@ -64,6 +64,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent(getApplicationContext(), StudentActivity.class);
         startActivity(intent);
     }
+    @OnClick(R.id.menu_prof)
+    void menu_prof() {
+        Intent intent = new Intent(getApplicationContext(), ProActivity.class);
+        startActivity(intent);
+    }
+    @OnClick(R.id.menu_site)
+    void menu_site() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.donga.ac.kr"));
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,18 +174,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(getApplicationContext(), EmptyActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_site) {
-        } else if (id == R.id.nav_add) {
+        } else if (id == R.id.nav_noti) {
+
+        } else if (id == R.id.nav_ver) {
+
+        } else if (id == R.id.nav_help) {
+            Intent intent = new Intent(getApplicationContext(), HelpActivity.class);
+            startActivity(intent);
         }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_home);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @OnClick(R.id.menu_site)
-    void menu_site() {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.donga.ac.kr"));
-        startActivity(intent);
     }
 }

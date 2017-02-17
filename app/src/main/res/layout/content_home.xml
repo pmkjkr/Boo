@@ -67,7 +67,7 @@
                 android:layout_height="140dp"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_weight="0.3"
-                android:background="#eb4c66"
+                android:background="#d33737"
                 android:text="To. 교수님"
                 android:textColor="#fff"
                 android:textSize="20dp"

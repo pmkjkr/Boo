@@ -2,6 +2,8 @@ package com.donga.examples.bumin;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
@@ -86,8 +88,8 @@ public class EmptyActivity extends AppCompatActivity
 
         List<String> empty_day_list = Arrays.asList(getResources().getStringArray(R.array.empty_day));
         final List<String> empty_clock_list = Arrays.asList(getResources().getStringArray(R.array.empty_clock));
-        ArrayAdapter<String> empty_day_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, empty_day_list);
-        ArrayAdapter<String> empty_clock_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, empty_clock_list);
+        ArrayAdapter<String> empty_day_adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, empty_day_list);
+        ArrayAdapter<String> empty_clock_adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, empty_clock_list);
         empty_day.setAdapter(empty_day_adapter);
         empty_clock1.setAdapter(empty_clock_adapter);
         empty_clock2.setAdapter(empty_clock_adapter);
@@ -102,7 +104,7 @@ public class EmptyActivity extends AppCompatActivity
                     empty_clock2_list.add(String.valueOf(i));
                     j++;
                 }
-                ArrayAdapter<String> empty_clock2_adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, empty_clock2_list);
+                ArrayAdapter<String> empty_clock2_adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, empty_clock2_list);
                 empty_clock2.setAdapter(empty_clock2_adapter);
             }
 
@@ -116,16 +118,18 @@ public class EmptyActivity extends AppCompatActivity
         behavior.setPeekHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 250.f, getResources().getDisplayMetrics()));
         behavior.setHideable(true);
 
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
-//                    behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-//                } else {
-//                    behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-//                }
-//            }
-//        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+                    behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                } else {
+                    behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                }
+            }
+        });
+        fab.setBackgroundTintList(ColorStateList.valueOf(Color
+                .parseColor("#1bbc96")));
     }
 
     @OnClick(R.id.fab_empty)

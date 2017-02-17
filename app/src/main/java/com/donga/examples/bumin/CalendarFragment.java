@@ -9,8 +9,12 @@ import android.support.v4.app.DialogFragment;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.View;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.donga.examples.bumin.Singleton.DateSingleton;
 import com.donga.examples.bumin.retrofit.retrofitMeal.Interface_meal;
@@ -44,8 +48,9 @@ public class CalendarFragment extends DialogFragment implements DatePickerDialog
 
     //텍스트에 선택한 날짜 나타내기
     @Override
-    public void onDateSet(DatePicker view, int year, int month, int date) {
-        TextView textView = (TextView) getActivity().findViewById(R.id.date_text);
+    public void onDateSet(DatePicker view, final int year, final int month, final int date) {
+        final TextView textView = (TextView) getActivity().findViewById(R.id.date_text);
+
         if (month < 10 && date < 10) {
             String new_month = "0" + (month + 1);
             String new_day = "0" + date;

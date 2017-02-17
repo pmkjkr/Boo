@@ -4,40 +4,79 @@ package com.donga.examples.bumin;
  * Created by rhfoq on 2017-02-08.
  */
 public class PartListViewItem {
-    private String sub_name;
-    private String dis;
-    private String grade;
-    private String ac;
+    private int type;
 
-    public String getAc() {
-        return ac;
+    private String title_year;
+    private String title_term;
+
+    private String name_subject;
+    private String name_grade;
+
+    private String content_none;
+    private String content_subject;
+    private String content_grade;
+
+    public String getContent_grade() {
+        return content_grade;
     }
 
-    public void setAc(String ac) {
-        this.ac = ac;
+    public void setContent_grade(String content_grade) {
+        this.content_grade = content_grade;
     }
 
-    public String getDis() {
-        return dis;
+    public String getContent_none() {
+        return content_none;
     }
 
-    public void setDis(String dis) {
-        this.dis = dis;
+    public void setContent_none(String content_none) {
+        this.content_none = content_none;
     }
 
-    public String getGrade() {
-        return grade;
+    public String getContent_subject() {
+        return content_subject;
     }
 
-    public void setGrade(String grade) {
-        this.grade = grade;
+    public void setContent_subject(String content_subject) {
+        this.content_subject = content_subject;
     }
 
-    public String getSub_name() {
-        return sub_name;
+    public String getName_grade() {
+        return name_grade;
     }
 
-    public void setSub_name(String sub_name) {
-        this.sub_name = sub_name;
+    public void setName_grade(String name_grade) {
+        this.name_grade = name_grade;
+    }
+
+    public String getName_subject() {
+        return name_subject;
+    }
+
+    public void setName_subject(String name_subject) {
+        this.name_subject = name_subject;
+    }
+
+    public String getTitle_term() {
+        return title_term;
+    }
+
+    public void setTitle_term(String title_term) {
+        this.title_term = title_term;
+    }
+
+    public String getTitle_year() {
+        return title_year;
+    }
+
+    public void setTitle_year(String title_year) {
+        this.title_year = title_year;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

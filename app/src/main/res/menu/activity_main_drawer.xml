@@ -31,9 +31,17 @@
     <item android:title="setting">
         <menu>
             <item
-                android:id="@+id/nav_add"
-                android:icon="@drawable/inter"
-                android:title="추가" />
+                android:id="@+id/nav_noti"
+                android:icon="@drawable/megaphone"
+                android:title="공지사항" />
+            <item
+                android:id="@+id/nav_ver"
+                android:icon="@drawable/ver"
+                android:title="버전정보" />
+            <item
+                android:id="@+id/nav_help"
+                android:icon="@drawable/help"
+                android:title="도움말" />
         </menu>
     </item>
 

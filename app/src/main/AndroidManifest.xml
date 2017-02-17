@@ -44,6 +44,15 @@
         <activity
             android:name=".StudentActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ProActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ProSubActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".HelpActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".AlertDialogActivity"

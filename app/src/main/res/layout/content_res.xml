@@ -5,22 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="16dp"
-
     android:paddingRight="20dp"
     android:paddingLeft="20dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/date_text"
-            android:text="날짜"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_gravity="center_horizontal"/>
-
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/pre_res"
+                android:src="@drawable/pre"
+                android:layout_marginRight="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/date_text"
+                android:text="날짜"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/next_res"
+                android:src="@drawable/next"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

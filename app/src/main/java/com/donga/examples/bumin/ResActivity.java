@@ -2,6 +2,7 @@ package com.donga.examples.bumin;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
@@ -16,12 +17,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.donga.examples.bumin.Singleton.DateSingleton;
 import com.donga.examples.bumin.retrofit.retrofitMeal.Interface_meal;
 import com.donga.examples.bumin.retrofit.retrofitMeal.Master3;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -39,6 +45,7 @@ public class ResActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private ProgressDialog mProgressDialog;
+    public static int count=0;
 
     @BindView(R.id.toolbar_res)
     Toolbar toolbar;
@@ -48,6 +55,10 @@ public class ResActivity extends AppCompatActivity
     NavigationView navigationView;
     @BindView(R.id.date_text)
     TextView date_text;
+    @BindView(R.id.pre_res)
+    ImageView pre_res;
+    @BindView(R.id.next_res)
+    ImageView next_res;
 
     @BindView(R.id.guk)
     TextView guk;
@@ -70,11 +81,11 @@ public class ResActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        retrofit();
-
-        SimpleDateFormat msimpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
+        SimpleDateFormat msimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date currentTime = new Date();
         String now = msimpleDateFormat.format(currentTime);
+
+        retrofit(now);
 
         date_text.setText(now);
         date_text.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +93,40 @@ public class ResActivity extends AppCompatActivity
             public void onClick(View v) {
                 DialogFragment newFragment = new CalendarFragment();
                 newFragment.show(getSupportFragmentManager(), "Date Picker");
+            }
+        });
+
+        pre_res.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplication(), "클릭", Toast.LENGTH_SHORT).show();
+
+                count = count - 1;
+
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DATE, count); // +1은 내일
+                SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+                String pre = date.format(cal.getTime());
+                Log.i("pre", pre);
+                retrofit(pre);
+                date_text.setText(pre);
+            }
+        });
+        next_res.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplication(), "클릭", Toast.LENGTH_SHORT).show();
+
+                count = count + 1;
+
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DATE, count); // +1은 내일
+                SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+                String next = date.format(cal.getTime());
+                Log.i("next", next);
+
+                retrofit(next);
+                date_text.setText(next);
             }
         });
     }
@@ -135,7 +180,8 @@ public class ResActivity extends AppCompatActivity
             Intent intent = new Intent(getApplicationContext(), RoomActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_pro) {
-
+            Intent intent = new Intent(getApplicationContext(), ProActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_stu) {
             Intent intent = new Intent(getApplicationContext(), StudentActivity.class);
             startActivity(intent);
@@ -143,6 +189,15 @@ public class ResActivity extends AppCompatActivity
             Intent intent = new Intent(getApplicationContext(), EmptyActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_site) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.donga.ac.kr"));
+            startActivity(intent);
+        } else if (id == R.id.nav_noti) {
+
+        } else if (id == R.id.nav_ver) {
+
+        } else if (id == R.id.nav_help) {
+            Intent intent = new Intent(getApplicationContext(), HelpActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_res);
@@ -150,17 +205,17 @@ public class ResActivity extends AppCompatActivity
         return true;
     }
 
-    public void retrofit() {
+    public void retrofit(String getTime) {
         showProgressDialog();
 
-        SimpleDateFormat msimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date currentTime = new Date();
-        String nowTime = msimpleDateFormat.format(currentTime);
+//        SimpleDateFormat msimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        Date currentTime = new Date();
+//        String nowTime = msimpleDateFormat.format(currentTime);
 
         Retrofit client = new Retrofit.Builder().baseUrl(getString(R.string.retrofit_url))
                 .addConverterFactory(GsonConverterFactory.create()).build();
         Interface_meal meal = client.create(Interface_meal.class);
-        retrofit2.Call<Master3> call3 = meal.getMeal(nowTime);
+        retrofit2.Call<Master3> call3 = meal.getMeal(getTime);
         call3.enqueue(new Callback<Master3>() {
             @Override
             public void onResponse(Call<Master3> call, Response<Master3> response) {
@@ -201,7 +256,6 @@ public class ResActivity extends AppCompatActivity
     private void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.hide();
-            mProgressDialog.dismiss();
         }
     }
 }

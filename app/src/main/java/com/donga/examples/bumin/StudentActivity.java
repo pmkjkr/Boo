@@ -49,7 +49,7 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        Log.i("STORAGE", String.valueOf(getApplicationContext().getFilesDir()));
+//        Log.i("STORAGE", String.valueOf(getApplicationContext().getFilesDir()));
 
         // Initializing the TabLayout
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);

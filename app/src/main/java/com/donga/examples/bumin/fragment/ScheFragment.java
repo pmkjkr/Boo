@@ -1,6 +1,10 @@
 package com.donga.examples.bumin.fragment;
 
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
@@ -8,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.donga.examples.bumin.AppendLog;
 import com.donga.examples.bumin.R;
@@ -23,6 +29,10 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnLongClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,8 +46,17 @@ public class ScheFragment extends Fragment {
     private ProgressDialog mProgressDialog;
     AppendLog appendLog = new AppendLog();
 
+    @BindView(R.id.tv_pro_tel)
+    TextView tv_pro_tel;
+    @BindView(R.id.tv_pro_email)
+    TextView tv_pro_email;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View rootview = inflater.inflate(R.layout.fragment_sche, container, false);
+        ButterKnife.bind(this,rootview);
+
+
 //        showProgressDialog();
 //
 //        //retrofit 통신
@@ -65,8 +84,42 @@ public class ScheFragment extends Fragment {
 //            e.printStackTrace();
 //        }
 
-        return inflater.inflate(R.layout.fragment_sche, container, false);
+        return rootview;
     }
+
+    @OnClick(R.id.tv_pro_tel)
+    void onTelClicked(){
+        ClipboardManager clipboardManager = (ClipboardManager)getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("label", tv_pro_tel.getText().toString());
+        clipboardManager.setPrimaryClip(clipData);
+    }
+
+    @OnLongClick(R.id.tv_pro_tel)
+    boolean onLongTelClicked(){
+        String pro_tel = tv_pro_tel.getText().toString();
+        Intent in = new Intent(Intent.ACTION_DIAL, Uri.parse(String.format("tel:%s", pro_tel)));
+        startActivity(in);
+        return true;
+    }
+
+    @OnClick(R.id.tv_pro_email)
+    void onEmailClicked(){
+        ClipboardManager clipboardManager = (ClipboardManager)getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("label", tv_pro_email.getText().toString());
+        clipboardManager.setPrimaryClip(clipData);
+    }
+
+    @OnLongClick(R.id.tv_pro_email)
+    boolean onEmailLongClicked(){
+        Intent it = new Intent(Intent.ACTION_SEND);
+        String[] mailaddr = {tv_pro_email.getText().toString()};
+        it.setType("plaine/text");
+        it.putExtra(Intent.EXTRA_EMAIL, mailaddr);
+        startActivity(it);
+        return true;
+    }
+
+
 
     private void showProgressDialog() {
         if (mProgressDialog == null) {

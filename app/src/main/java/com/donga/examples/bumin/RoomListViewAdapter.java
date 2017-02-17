@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +24,8 @@ public class RoomListViewAdapter extends BaseAdapter {
 
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private ArrayList<RoomListViewItem> listViewItemList = new ArrayList<RoomListViewItem>();
+
+    private Map<Integer, View> myViews = new HashMap<Integer, View>();
 
     // ListViewAdapter의 생성자
     public RoomListViewAdapter() {
@@ -39,40 +43,55 @@ public class RoomListViewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         final int pos = position;
         final Context context = parent.getContext();
+        ViewHolder viewHolder = null;
+        View view = myViews.get(position);
 
+        convertView = null;
         // "listview_item" Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.listview_room, parent, false);
+            convertView = inflater.inflate(R.layout.listview_room, null);
+
+            viewHolder = new ViewHolder();
+
+            // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
+            viewHolder.text_room1 = (TextView) convertView.findViewById(R.id.text_room1);
+            viewHolder.text_room2 = (TextView) convertView.findViewById(R.id.text_room2);
+            viewHolder.text_room3 = (TextView) convertView.findViewById(R.id.text_room3);
+            viewHolder.text_room4 = (TextView) convertView.findViewById(R.id.text_room4);
+            viewHolder.text_room5 = (TextView) convertView.findViewById(R.id.text_room5);
+
+
+            // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
+            RoomListViewItem listViewItem = listViewItemList.get(position);
+
+            double numInt = Double.parseDouble(listViewItem.getTitle5());
+            long math= Math.round(numInt);
+            String change = String.valueOf(math);
+
+            // 아이템 내 각 위젯에 데이터 반영
+            viewHolder.text_room1.setText(listViewItem.getTitle1());
+            viewHolder.text_room2.setText(listViewItem.getTitle2());
+            viewHolder.text_room3.setText(listViewItem.getTitle3());
+            viewHolder.text_room4.setText(listViewItem.getTitle4());
+            viewHolder.text_room5.setText(change+"%");
+
+
+            convertView.setTag(viewHolder);
+
+
+            if (50.0 <= Float.parseFloat(listViewItem.getTitle5()) && Float.parseFloat(listViewItem.getTitle5()) <= 100.0) {
+                Log.i("validated" + pos, viewHolder.text_room5.getText().toString());
+                viewHolder.text_room5.setTextColor(Color.RED);
+
+            } else {
+                Log.i("notval" + pos, viewHolder.text_room5.getText().toString());
+            }
+        }else{
+            viewHolder = (ViewHolder)convertView.getTag();
         }
 
-        // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        TextView text_room1 = (TextView) convertView.findViewById(R.id.text_room1);
-        TextView text_room2 = (TextView) convertView.findViewById(R.id.text_room2);
-        TextView text_room3 = (TextView) convertView.findViewById(R.id.text_room3);
-        TextView text_room4 = (TextView) convertView.findViewById(R.id.text_room4);
-        TextView text_room5 = (TextView) convertView.findViewById(R.id.text_room5);
-
-        // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
-        RoomListViewItem listViewItem = listViewItemList.get(position);
-
-        // 아이템 내 각 위젯에 데이터 반영
-        text_room1.setText(listViewItem.getTitle1());
-        text_room2.setText(listViewItem.getTitle2());
-        text_room3.setText(listViewItem.getTitle3());
-        text_room4.setText(listViewItem.getTitle4());
-        text_room5.setText(listViewItem.getTitle5() + "%");
-
-//        String msg1 = text_room5.getText().toString();
-//        String regex = "^100+@$";
-//        if(validateEmail(text_room5.getText().toString())){
-        if (50.0 <= Float.parseFloat(listViewItem.getTitle5()) && Float.parseFloat(listViewItem.getTitle5()) <= 100.0) {
-            Log.i("validated" + pos, text_room5.getText().toString());
-//            text_room5.setTextColor(Color.RED);
-
-        } else {
-            Log.i("notval" + pos, text_room5.getText().toString());
-        }
+        myViews.put(position, view);
 
 
         return convertView;
@@ -103,9 +122,7 @@ public class RoomListViewAdapter extends BaseAdapter {
         listViewItemList.add(item);
     }
 
-//    public static boolean validateEmail(String emailStr) {
-//        final Pattern VALID_PERCENT_REGEX = Pattern.compile("100%");
-//        Matcher matcher = VALID_PERCENT_REGEX.matcher(emailStr);
-//        return matcher.find();
-//    }
+    class ViewHolder{
+        TextView text_room1, text_room2, text_room3, text_room4, text_room5;
+    }
 }
