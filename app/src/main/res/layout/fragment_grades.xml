@@ -27,7 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="국제관광통상학부"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:id="@+id/tv_multi" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -43,7 +44,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="국제관광통상학부"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:id="@+id/tv_sub" />
     </LinearLayout>
 
     <LinearLayout
@@ -67,7 +69,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="2014"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:id="@+id/tv_year" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -83,7 +86,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="x.xx"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:id="@+id/tv_avgGrade" />
     </LinearLayout>
 
     <LinearLayout
@@ -107,7 +111,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="대상아님"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:id="@+id/tv_early" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -123,7 +128,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="대상아님"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:id="@+id/tv_smart" />
     </LinearLayout>
     <View
         android:layout_width="match_parent"
@@ -175,25 +181,29 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="교양필수" />
+                        android:text="교양필수"
+                        android:id="@+id/kyo_02" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="균형교양" />
+                        android:text="균형교양"
+                        android:id="@+id/kyo_03" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="학과교양" />
+                        android:text="학과교양"
+                        android:id="@+id/kyo_04" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="중점교양" />
+                        android:text="중점교양"
+                        android:id="@+id/kyo_05" />
                 </TableRow>
 
                 <TableRow
@@ -208,28 +218,28 @@
                         android:text="필요학점" />
 
                     <TextView
-                        android:id="@+id/need1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="7" />
+                        android:text="7"
+                        android:id="@+id/kyo_11" />
 
                     <TextView
-                        android:id="@+id/need2"
+                        android:id="@+id/kyo_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="9" />
 
                     <TextView
-                        android:id="@+id/need3"
+                        android:id="@+id/kyo_13"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="15" />
 
                     <TextView
-                        android:id="@+id/need4"
+                        android:id="@+id/kyo_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
@@ -248,28 +258,28 @@
                         android:text="취득학점" />
 
                     <TextView
-                        android:id="@+id/take1"
+                        android:id="@+id/kyo_21"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="7" />
 
                     <TextView
-                        android:id="@+id/take2"
+                        android:id="@+id/kyo_22"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="9" />
 
                     <TextView
-                        android:id="@+id/take3"
+                        android:id="@+id/kyo_23"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="15" />
 
                     <TextView
-                        android:id="@+id/take4"
+                        android:id="@+id/kyo_24"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
@@ -288,28 +298,28 @@
                         android:text="과부족" />
 
                     <TextView
-                        android:id="@+id/minu1"
+                        android:id="@+id/kyo_31"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="0" />
 
                     <TextView
-                        android:id="@+id/minu2"
+                        android:id="@+id/kyo_32"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="0" />
 
                     <TextView
-                        android:id="@+id/minu3"
+                        android:id="@+id/kyo_33"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="0" />
 
                     <TextView
-                        android:id="@+id/minu4"
+                        android:id="@+id/kyo_34"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
@@ -353,13 +363,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="전공필수" />
+                        android:text="전공필수"
+                        android:id="@+id/jun_01" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="전공선택" />
+                        android:text="전공선택"
+                        android:id="@+id/jun_02" />
                 </TableRow>
 
                 <TableRow
@@ -374,14 +386,14 @@
                         android:text="필요학점" />
 
                     <TextView
-                        android:id="@+id/need5"
+                        android:id="@+id/jun_11"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="36" />
 
                     <TextView
-                        android:id="@+id/need6"
+                        android:id="@+id/jun_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
@@ -400,14 +412,14 @@
                         android:text="취득학점" />
 
                     <TextView
-                        android:id="@+id/take5"
+                        android:id="@+id/jun_21"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="36" />
 
                     <TextView
-                        android:id="@+id/take6"
+                        android:id="@+id/jun_22"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
@@ -426,19 +438,18 @@
                         android:text="과부족" />
 
                     <TextView
-                        android:id="@+id/minu5"
+                        android:id="@+id/jun_31"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="0" />
 
                     <TextView
-                        android:id="@+id/minu6"
+                        android:id="@+id/jun_32"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="-12"
-                        android:textColor="#f00" />
+                        android:text="-12" />
                 </TableRow>
             </TableLayout>
 
@@ -476,7 +487,7 @@
                         android:text="필요학점" />
 
                     <TextView
-                        android:id="@+id/need7"
+                        android:id="@+id/ja_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
@@ -495,7 +506,7 @@
                         android:text="취득학점" />
 
                     <TextView
-                        android:id="@+id/take7"
+                        android:id="@+id/ja_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
@@ -514,12 +525,11 @@
                         android:text="과부족" />
 
                     <TextView
-                        android:id="@+id/minu7"
+                        android:id="@+id/ja_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="-8"
-                        android:textColor="#f00" />
+                        android:text="-8" />
                 </TableRow>
             </TableLayout>
         </LinearLayout>

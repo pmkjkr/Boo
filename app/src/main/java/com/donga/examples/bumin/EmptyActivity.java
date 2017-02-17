@@ -1,6 +1,7 @@
 package com.donga.examples.bumin;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
@@ -85,8 +86,8 @@ public class EmptyActivity extends AppCompatActivity
 
         List<String> empty_day_list = Arrays.asList(getResources().getStringArray(R.array.empty_day));
         final List<String> empty_clock_list = Arrays.asList(getResources().getStringArray(R.array.empty_clock));
-        ArrayAdapter<String> empty_day_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, empty_day_list);
-        ArrayAdapter<String> empty_clock_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, empty_clock_list);
+        ArrayAdapter<String> empty_day_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, empty_day_list);
+        ArrayAdapter<String> empty_clock_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, empty_clock_list);
         empty_day.setAdapter(empty_day_adapter);
         empty_clock1.setAdapter(empty_clock_adapter);
         empty_clock2.setAdapter(empty_clock_adapter);
@@ -101,7 +102,7 @@ public class EmptyActivity extends AppCompatActivity
                     empty_clock2_list.add(String.valueOf(i));
                     j++;
                 }
-                ArrayAdapter<String> empty_clock2_adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, empty_clock2_list);
+                ArrayAdapter<String> empty_clock2_adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, empty_clock2_list);
                 empty_clock2.setAdapter(empty_clock2_adapter);
             }
 
@@ -115,20 +116,31 @@ public class EmptyActivity extends AppCompatActivity
         behavior.setPeekHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 250.f, getResources().getDisplayMetrics()));
         behavior.setHideable(true);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
-                    behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                } else {
-                    behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-                }
-            }
-        });
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+//                    behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+//                } else {
+//                    behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+//                }
+//            }
+//        });
+    }
+
+    @OnClick(R.id.fab_empty)
+    void onFab_EmptyClicked(){
+        if (behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+            behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        } else {
+            behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        }
     }
 
     @OnClick(R.id.bottom_button2)
     void onBottomButtonClicked() {
+        behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
         String empty_day_day = empty_day.getSelectedItem().toString();
         Log.i("empty_clock1", empty_clock1.getSelectedItem().toString());
         Log.i("empty_clock2", empty_clock2.getSelectedItem().toString());
@@ -150,7 +162,6 @@ public class EmptyActivity extends AppCompatActivity
                 empty_day_day = "5";
                 break;
         }
-        Log.i("empty_day", empty_day_day);
 
         showProgressDialog();
 
@@ -189,7 +200,11 @@ public class EmptyActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(getBaseContext(), HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -221,18 +236,21 @@ public class EmptyActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_res) {
+            Intent intent = new Intent(getApplicationContext(), ResActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_room) {
+            Intent intent = new Intent(getApplicationContext(), RoomActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_pro) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_stu) {
+            Intent intent = new Intent(getApplicationContext(), StudentActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_empty) {
+            Intent intent = new Intent(getApplicationContext(), EmptyActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_site) {
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_empty);
@@ -253,6 +271,7 @@ public class EmptyActivity extends AppCompatActivity
     private void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.hide();
+            mProgressDialog.dismiss();
         }
     }
 }

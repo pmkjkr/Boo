@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,11 +14,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +30,9 @@ import butterknife.OnClick;
  * Created by rhfoq on 2017-02-07.
  */
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
 
     @BindView(R.id.toolbar_home)
     Toolbar toolbar;
@@ -98,11 +104,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_res);
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        } else {    //뒤로가기 버튼 두 번 누르면 종료
+            if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime)  //연속 누를 때 2초 안에 안누르면 종료 x
+            {
+                super.onBackPressed();
+            }
+            else    //종료
+            {
+                backPressedTime = tempTime;
+                Toast.makeText(getApplicationContext(), "'뒤로'버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -134,22 +149,33 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_res) {
+            Intent intent = new Intent(getApplicationContext(), ResActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_room) {
+            Intent intent = new Intent(getApplicationContext(), RoomActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_pro) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_stu) {
+            Intent intent = new Intent(getApplicationContext(), StudentActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_empty) {
+            Intent intent = new Intent(getApplicationContext(), EmptyActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_site) {
+        } else if (id == R.id.nav_add) {
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_res);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_home);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @OnClick(R.id.menu_site)
+    void menu_site() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.donga.ac.kr"));
+        startActivity(intent);
     }
 }

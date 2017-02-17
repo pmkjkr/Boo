@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.donga.examples.bumin.Fragment.AchievFragment;
-import com.donga.examples.bumin.Fragment.GrageFragment;
-import com.donga.examples.bumin.Fragment.ScheFragment;
+import com.donga.examples.bumin.fragment.AchievFragment;
+import com.donga.examples.bumin.fragment.GrageFragment;
+import com.donga.examples.bumin.fragment.ScheFragment;
 
 /**
  * Created by rhfoq on 2017-02-15.
@@ -27,7 +27,7 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
         // Returning the current tabs
         switch (position) {
             case 0:
-                ScheFragment scheFragment= new ScheFragment();
+                ScheFragment scheFragment = new ScheFragment();
                 return scheFragment;
             case 1:
                 GrageFragment grageFragment = new GrageFragment();

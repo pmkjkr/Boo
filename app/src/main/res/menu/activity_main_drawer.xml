@@ -3,33 +3,37 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_res"
+            android:icon="@drawable/res"
+            android:title="식당" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/nav_room"
+            android:icon="@drawable/desk"
+            android:title="열람실" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/nav_pro"
+            android:icon="@drawable/mail"
+            android:title="To. 교수님" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_stu"
+            android:icon="@drawable/stu"
+            android:title="학생정보" />
+        <item
+            android:id="@+id/nav_empty"
+            android:icon="@drawable/loca"
+            android:title="빈강" />
+        <item
+            android:id="@+id/nav_site"
+            android:icon="@drawable/inter"
+            android:title="사이트" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="setting">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/nav_add"
+                android:icon="@drawable/inter"
+                android:title="추가" />
         </menu>
     </item>
 

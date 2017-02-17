@@ -1,25 +1,33 @@
 package com.donga.examples.bumin;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.donga.examples.bumin.retrofit.retrofitRoom.Interface_room;
 import com.donga.examples.bumin.retrofit.retrofitRoom.Master4;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,6 +50,10 @@ public class RoomActivity extends AppCompatActivity
     NavigationView navigationView;
     @BindView(R.id.list_room)
     ListView listview;
+    @BindView(R.id.iv_room)
+    ImageView iv_room;
+    View header;
+    TextView tv_room5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,41 +71,24 @@ public class RoomActivity extends AppCompatActivity
 
         showProgressDialog();
 
-        //retrofit 통신
-        Retrofit client = new Retrofit.Builder().baseUrl(getString(R.string.retrofit_url))
-                .addConverterFactory(GsonConverterFactory.create()).build();
-        Interface_room room = client.create(Interface_room.class);
-        Call<Master4> call4 = room.getRoom();
-        call4.enqueue(new Callback<Master4>() {
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swiper);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onResponse(Call<Master4> call, Response<Master4> response) {
-                // Adapter 생성
-                RoomListViewAdapter adapter = new RoomListViewAdapter();
-                // Adapter달기
-                listview.setAdapter(adapter);
-                for(int i = 0; i<response.body().getResult_body().size(); i++){
-                    adapter.addItem(response.body().getResult_body().get(i).getLoc(),
-                            response.body().getResult_body().get(i).getAll(),
-                            response.body().getResult_body().get(i).getUse(),
-                            response.body().getResult_body().get(i).getRemain(),
-                            response.body().getResult_body().get(i).getUtil());
-
-//                    if(response.body().getResult_body().get(i).getLoc().equals("사회대 열람실1")){
-//                        Log.i("onResponse", response.body().getResult_body().get(i).getLoc()+"의 이용률 : "+response.body().getResult_body().get(i).getUtil());
-//                        Log.i("onResponse", response.body().getResult_body().get(i).getUtil());
-//                    }
-
-                    hideProgressDialog();
-                }
-            }
-            @Override
-            public void onFailure(Call<Master4> call, Throwable t) {
-                hideProgressDialog();
-                Log.i("CALL4", "onFailure");
-                t.printStackTrace();
+            public void onRefresh() {
+                showProgressDialog();
+                retrofit();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
 
+        retrofit();
+
+    }
+
+    @OnClick(R.id.iv_room)
+    void onIvClicked() {
+        showProgressDialog();
+        retrofit();
     }
 
     @Override
@@ -102,7 +97,11 @@ public class RoomActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(getBaseContext(), HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -134,18 +133,21 @@ public class RoomActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_res) {
+            Intent intent = new Intent(getApplicationContext(), ResActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_room) {
+            Intent intent = new Intent(getApplicationContext(), RoomActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_pro) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_stu) {
+            Intent intent = new Intent(getApplicationContext(), StudentActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_empty) {
+            Intent intent = new Intent(getApplicationContext(), EmptyActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_site) {
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_room);
@@ -168,5 +170,49 @@ public class RoomActivity extends AppCompatActivity
             mProgressDialog.hide();
             mProgressDialog.dismiss();
         }
+    }
+
+    public void retrofit() {
+        //retrofit 통신
+        Retrofit client = new Retrofit.Builder().baseUrl(getString(R.string.retrofit_url))
+                .addConverterFactory(GsonConverterFactory.create()).build();
+        Interface_room room = client.create(Interface_room.class);
+        Call<Master4> call4 = room.getRoom();
+        call4.enqueue(new Callback<Master4>() {
+            @Override
+            public void onResponse(Call<Master4> call, Response<Master4> response) {
+                // Adapter 생성
+                RoomListViewAdapter adapter = new RoomListViewAdapter();
+                // Adapter달기
+                listview.setAdapter(adapter);
+                for (int i = 0; i < response.body().getResult_body().size(); i++) {
+                    adapter.addItem(response.body().getResult_body().get(i).getLoc(),
+                            response.body().getResult_body().get(i).getAll(),
+                            response.body().getResult_body().get(i).getUse(),
+                            response.body().getResult_body().get(i).getRemain(),
+                            response.body().getResult_body().get(i).getUtil());
+                    if (validateEmail(response.body().getResult_body().get(i).getUtil())) {
+                        header = getLayoutInflater().inflate(R.layout.listview_room, null, false);
+                        tv_room5 = (TextView)header.findViewById(R.id.text_room5);
+                        Log.i("100%", "100%");
+                        tv_room5.setTextColor(Color.RED);
+                    }
+                    hideProgressDialog();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Master4> call, Throwable t) {
+                hideProgressDialog();
+                Log.i("CALL4", "onFailure");
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public static boolean validateEmail(String emailStr) {
+        final Pattern VALID_PERCENT_REGEX = Pattern.compile("100");
+        Matcher matcher = VALID_PERCENT_REGEX.matcher(emailStr);
+        return matcher.find();
     }
 }

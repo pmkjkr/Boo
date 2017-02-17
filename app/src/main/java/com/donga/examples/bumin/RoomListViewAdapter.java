@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
  * Created by rhfoq on 2017-02-08.
  */
 public class RoomListViewAdapter extends BaseAdapter {
+
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private ArrayList<RoomListViewItem> listViewItemList = new ArrayList<RoomListViewItem>();
 
@@ -55,26 +56,24 @@ public class RoomListViewAdapter extends BaseAdapter {
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         RoomListViewItem listViewItem = listViewItemList.get(position);
 
-
-
-
-//        String msg1 = text_room5.getText().toString();
-//        String regex = "^100+@$";
-//        if(validateEmail(text_room5.getText().toString())){
-        if(50.0<=Float.parseFloat(listViewItem.getTitle5())&&Float.parseFloat(listViewItem.getTitle5())<=100.0){
-            Log.i("validated"+pos, text_room5.getText().toString());
-            text_room5.setTextColor(Color.RED);
-
-        }else{
-            Log.i("notval"+pos, text_room5.getText().toString());
-        }
-
         // 아이템 내 각 위젯에 데이터 반영
         text_room1.setText(listViewItem.getTitle1());
         text_room2.setText(listViewItem.getTitle2());
         text_room3.setText(listViewItem.getTitle3());
         text_room4.setText(listViewItem.getTitle4());
-        text_room5.setText(listViewItem.getTitle5()+"%");
+        text_room5.setText(listViewItem.getTitle5() + "%");
+
+//        String msg1 = text_room5.getText().toString();
+//        String regex = "^100+@$";
+//        if(validateEmail(text_room5.getText().toString())){
+        if (50.0 <= Float.parseFloat(listViewItem.getTitle5()) && Float.parseFloat(listViewItem.getTitle5()) <= 100.0) {
+            Log.i("validated" + pos, text_room5.getText().toString());
+//            text_room5.setTextColor(Color.RED);
+
+        } else {
+            Log.i("notval" + pos, text_room5.getText().toString());
+        }
+
 
         return convertView;
     }

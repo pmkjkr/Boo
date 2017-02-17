@@ -1,5 +1,6 @@
 package com.donga.examples.bumin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -10,8 +11,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.donga.examples.bumin.fragment.ScheFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,7 +23,7 @@ import butterknife.ButterKnife;
 /**
  * Created by rhfoq on 2017-02-15.
  */
-public class StudentActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class StudentActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -45,6 +49,8 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
 
         navigationView.setNavigationItemSelectedListener(this);
 
+        Log.i("STORAGE", String.valueOf(getApplicationContext().getFilesDir()));
+
         // Initializing the TabLayout
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("시간표"));
@@ -56,7 +62,7 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
         viewPager = (ViewPager) findViewById(R.id.pager);
 
         // Creating TabPagerAdapter adapter
-        TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        final TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
@@ -87,7 +93,11 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(getBaseContext(), HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -119,18 +129,21 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_res) {
+            Intent intent = new Intent(getApplicationContext(), ResActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_room) {
+            Intent intent = new Intent(getApplicationContext(), RoomActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_pro) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_stu) {
+            Intent intent = new Intent(getApplicationContext(), StudentActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_empty) {
+            Intent intent = new Intent(getApplicationContext(), EmptyActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_site) {
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_stu);

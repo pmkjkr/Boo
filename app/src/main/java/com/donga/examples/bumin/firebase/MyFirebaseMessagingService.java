@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 Google Inc. All Rights Reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -82,8 +82,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             bun.putString("contents", String.valueOf(PushSingleton.getInstance().getmMap().get("contents")));
             Intent popupIntent = new Intent(getApplicationContext(), AlertDialogActivity.class);
             popupIntent.putExtras(bun);
-            PendingIntent pie= PendingIntent.getActivity(getApplicationContext(), 0, popupIntent, PendingIntent.FLAG_ONE_SHOT);
-            try{
+            PendingIntent pie = PendingIntent.getActivity(getApplicationContext(), 0, popupIntent, PendingIntent.FLAG_ONE_SHOT);
+            try {
                 pie.send();
             } catch (PendingIntent.CanceledException e) {
                 e.printStackTrace();
@@ -112,7 +112,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.boo)
                 .setContentTitle("FCM Message")
@@ -128,10 +128,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
 
-    String getRunActivity()	{
-        ActivityManager activity_manager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+    String getRunActivity() {
+        ActivityManager activity_manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> task_info = activity_manager.getRunningTasks(9999);
-        for(int i=0; i<task_info.size(); i++) {
+        for (int i = 0; i < task_info.size(); i++) {
 //            Log.d("getRunActivity", "[" + i + "] : "+ task_info.get(i).topActivity.getClassName());
 //            Log.d("getRunActivity", task_info.get(i).topActivity.getClassName());
         }

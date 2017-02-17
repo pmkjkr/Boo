@@ -48,9 +48,6 @@
         <activity
             android:name=".AlertDialogActivity"
             android:theme="@android:style/Theme.Dialog">
-            <!--<intent-filter>-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
         </activity>
 
         <!-- [START firebase_service] -->

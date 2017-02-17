@@ -33,6 +33,11 @@
         <item>19</item>
         <item>20</item>
     </string-array>
+    <string name="decrypt_key">key</string>
+    <string-array name="achiev_select">
+        <item>전체학기성적</item>
+        <item>일부학기성적</item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

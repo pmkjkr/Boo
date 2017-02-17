@@ -1,6 +1,7 @@
 package com.donga.examples.bumin;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
@@ -91,7 +92,11 @@ public class ResActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(getBaseContext(), HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -104,14 +109,14 @@ public class ResActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-            // Handle action bar item clicks here. The action bar will
-            // automatically handle clicks on the Home/Up button, so long
-            // as you specify a parent activity in AndroidManifest.xml.
-            int id = item.getItemId();
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
-            //noinspection SimplifiableIfStatement
-            if (id == R.id.action_settings) {
-                return true;
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -123,18 +128,21 @@ public class ResActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_res) {
+            Intent intent = new Intent(getApplicationContext(), ResActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_room) {
+            Intent intent = new Intent(getApplicationContext(), RoomActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_pro) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_stu) {
+            Intent intent = new Intent(getApplicationContext(), StudentActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_empty) {
+            Intent intent = new Intent(getApplicationContext(), EmptyActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_site) {
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_res);
@@ -142,7 +150,7 @@ public class ResActivity extends AppCompatActivity
         return true;
     }
 
-    public void retrofit(){
+    public void retrofit() {
         showProgressDialog();
 
         SimpleDateFormat msimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -193,6 +201,7 @@ public class ResActivity extends AppCompatActivity
     private void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.hide();
+            mProgressDialog.dismiss();
         }
     }
 }

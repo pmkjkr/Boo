@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.donga.examples.bumin.Singleton.InfoSingleton;
 import com.donga.examples.bumin.retrofit.retrofitFirstLogin.Interface_FirstLogin;
 import com.donga.examples.bumin.retrofit.retrofitLogin.Interface_login;
 import com.donga.examples.bumin.retrofit.retrofitLogin.Master;
@@ -34,12 +35,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
+
     final String SFLAG = "LOGIN";
     @BindView(R.id.s_id)
     EditText s_id;
     @BindView(R.id.s_pw)
     EditText s_pw;
-    String key = "key";
 
     @OnClick(R.id.login_bt)
     void loginButton() {
@@ -53,14 +56,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Master> call, Response<Master> response) {
                 Log.i("LoginActivityLoginRes", String.valueOf(response.body().getResult_body().get(0).getStuId()));
-                SharedPreferences sharedPreferences = getSharedPreferences(SFLAG, Context.MODE_PRIVATE);
+                final SharedPreferences sharedPreferences = getSharedPreferences(SFLAG, Context.MODE_PRIVATE);
 
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt("stuID",response.body().getResult_body().get(0).getStuId());
+                editor.putInt("stuID", response.body().getResult_body().get(0).getStuId());
                 editor.putInt("ID", response.body().getResult_body().get(0).getId());
                 editor.putString("UUID", GetDevicesUUID(getApplicationContext()));
                 try {
-                    editor.putString("pw", Encrypt(s_pw.getText().toString(), key));
+                    editor.putString("pw", Encrypt(s_pw.getText().toString(), getString(R.string.decrypt_key)));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -74,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                 Interface_FirstLogin firstLogin = client.create(Interface_FirstLogin.class);
                 TelephonyManager tManager = (TelephonyManager) getBaseContext()
                         .getSystemService(Context.TELEPHONY_SERVICE);
-                Log.e("LoginActivity", "token : "+token);
+                Log.e("LoginActivity", "token : " + token);
                 Call<com.donga.examples.bumin.retrofit.retrofitFirstLogin.Master> call5 = firstLogin.loginUser(GetDevicesUUID(getApplicationContext()),
                         "ANDROID", Build.MODEL, tManager.getNetworkOperatorName(), String.valueOf(Build.VERSION.SDK_INT), token, String.valueOf(sharedPreferences.getInt("ID", 0)));
                 call5.enqueue(new Callback<com.donga.examples.bumin.retrofit.retrofitFirstLogin.Master>() {
@@ -82,6 +85,9 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(Call<com.donga.examples.bumin.retrofit.retrofitFirstLogin.Master> call, Response<com.donga.examples.bumin.retrofit.retrofitFirstLogin.Master> response) {
                         //2는 이미 존재한다는 뜻
                         Log.i("FirstLoginOnResponse", String.valueOf(response.body().getResult_code()));
+
+                        InfoSingleton.getInstance().setStuId(String.valueOf(sharedPreferences.getInt("stuID", 0)));
+                        InfoSingleton.getInstance().setStuPw(sharedPreferences.getString("pw", ""));
                     }
 
                     @Override
@@ -110,26 +116,25 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         SharedPreferences sharedPreferences = getSharedPreferences(SFLAG, Context.MODE_PRIVATE);
-        if(sharedPreferences.contains("stuID")&&sharedPreferences.contains("ID")&&sharedPreferences.contains("pw")){
+        if (sharedPreferences.contains("stuID") && sharedPreferences.contains("ID") && sharedPreferences.contains("pw")) {
             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
             startActivity(intent);
-        }else{
-            Toast.makeText (getApplicationContext(), "로그인해주세용", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "로그인해주세용", Toast.LENGTH_SHORT).show();
         }
     }
 
     // MD5 복호화
-    public static String Decrypt(String text, String key) throws Exception
-    {
+    public static String Decrypt(String text, String key) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        byte[] keyBytes= new byte[16];
-        byte[] b= key.getBytes("UTF-8");
-        int len= b.length;
+        byte[] keyBytes = new byte[16];
+        byte[] b = key.getBytes("UTF-8");
+        int len = b.length;
         if (len > keyBytes.length) len = keyBytes.length;
         System.arraycopy(b, 0, keyBytes, 0, len);
         SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "AES");
         IvParameterSpec ivSpec = new IvParameterSpec(keyBytes);
-        cipher.init(Cipher.DECRYPT_MODE,keySpec,ivSpec);
+        cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
 
 
 //               BASE64Decoder decoder = new BASE64Decoder();
@@ -137,23 +142,22 @@ public class LoginActivity extends AppCompatActivity {
 //               byte [] results = cipher.doFinal(decoder.decodeBuffer(text));
         // BASE64Decoder decoder = new BASE64Decoder();
         // Base64.decode(input, flags)
-        byte [] results = cipher.doFinal(Base64.decode(text, 0));
+        byte[] results = cipher.doFinal(Base64.decode(text, 0));
 
-        return new String(results,"UTF-8");
+        return new String(results, "UTF-8");
     }
 
     // MD5 암호화
-    public static String Encrypt(String text, String key) throws Exception
-    {
+    public static String Encrypt(String text, String key) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        byte[] keyBytes= new byte[16];
-        byte[] b= key.getBytes("UTF-8");
-        int len= b.length;
+        byte[] keyBytes = new byte[16];
+        byte[] b = key.getBytes("UTF-8");
+        int len = b.length;
         if (len > keyBytes.length) len = keyBytes.length;
         System.arraycopy(b, 0, keyBytes, 0, len);
         SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "AES");
         IvParameterSpec ivSpec = new IvParameterSpec(keyBytes);
-        cipher.init(Cipher.ENCRYPT_MODE,keySpec,ivSpec);
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
 
         byte[] results = cipher.doFinal(text.getBytes("UTF-8"));
 //               BASE64Encoder encoder = new BASE64Encoder();
@@ -163,14 +167,28 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // Device UUID 구하기
-    private String GetDevicesUUID(Context mContext){
+    private String GetDevicesUUID(Context mContext) {
         final TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
         final String tmDevice, tmSerial, androidId;
         tmDevice = "" + tm.getDeviceId();
         tmSerial = "" + tm.getSimSerialNumber();
         androidId = "" + android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
-        UUID deviceUuid = new UUID(androidId.hashCode(), ((long)tmDevice.hashCode() << 32) | tmSerial.hashCode());
+        UUID deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
         String deviceId = deviceUuid.toString();
         return deviceId;
+    }
+
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
+        if ( 0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime ) {
+            super.onBackPressed();
+        } else {
+            backPressedTime = tempTime;
+            Toast.makeText(getApplicationContext(),"'뒤로'버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }
