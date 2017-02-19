@@ -33,7 +33,6 @@ public class Stu_Achiev_Part_Fragment extends Fragment {
     @BindView(R.id.aver)
     TextView aver;
 
-
     private PartListViewAdapter adapter;
 
     @Override

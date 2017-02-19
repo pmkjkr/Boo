@@ -10,12 +10,12 @@
         android:id="@+id/tabLayout_manage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#2d3e50"
+        android:background="#9bc2d4"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:tabTextColor="#fff"
         app:tabIndicatorColor="#fff"
-        app:tabSelectedTextColor="#A9D0F5"
+        app:tabSelectedTextColor="#315160"
         app:tabTextAppearance="@style/MyTabLayoutTextAppearance"/>
 
     <android.support.v4.view.ViewPager
