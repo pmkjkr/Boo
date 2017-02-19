@@ -15,7 +15,8 @@
         android:text="2014"
         android:textColor="#2d3e50"
         android:textSize="20dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"/>
 
     <TextView
         android:id="@+id/part_title_term"
@@ -24,5 +25,6 @@
         android:text="1학기"
         android:textColor="#2d3e50"
         android:textSize="20dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"/>
 </LinearLayout>

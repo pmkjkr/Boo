@@ -28,8 +28,8 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.donga.examples.bumin.AlertDialogActivity;
-import com.donga.examples.bumin.FirstActivity;
+import com.donga.examples.bumin.activity.AlertDialogActivity;
+import com.donga.examples.bumin.activity.FirstActivity;
 import com.donga.examples.bumin.R;
 import com.donga.examples.bumin.Singleton.PushSingleton;
 import com.google.firebase.messaging.FirebaseMessagingService;

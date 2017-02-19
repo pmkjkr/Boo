@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:paddingLeft="9dp"
-        android:text="NPE"
+        android:text="\u003cNPE\u003e"
         android:textColor="#000" />
 
     <TextView
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:paddingLeft="9dp"
-        android:text="Server, DBA, BackEnd"
+        android:text="\u00bbServer, DBA, BackEnd\u00ab"
         android:textColor="#000" />
 
     <TextView
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:paddingLeft="9dp"
-        android:text="FrontEnd 구현"
+        android:text="\u00bbFrontEnd 구현\u00ab"
         android:textColor="#000" />
 
     <TextView
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:paddingLeft="9dp"
-        android:text="FrontEnd 디자인"
+        android:text="\u00bbFrontEnd 디자인\u00ab "
         android:textColor="#000" />
 
     <TextView

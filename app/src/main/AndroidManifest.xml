@@ -14,11 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ResActivity"
+            android:name=".activity.ResActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".FirstActivity"
+            android:name=".activity.FirstActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,35 +27,34 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegActivity"
+            android:name=".activity.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".activity.RoomActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".RoomActivity"
+            android:name=".activity.EmptyActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".EmptyActivity"
+            android:name=".activity.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".StudentActivity"
+            android:name=".activity.StudentActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".ProActivity"
+            android:name=".activity.ProActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".ProSubActivity"
+            android:name=".activity.ProSubActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".HelpActivity"
+            android:name=".activity.HelpActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
-            android:name=".AlertDialogActivity"
+            android:name=".activity.ManageActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.AlertDialogActivity"
             android:theme="@android:style/Theme.Dialog">
         </activity>
 

@@ -29,6 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dp"
-            android:id="@+id/list_all">
+            android:id="@+id/list_all"
+            android:layout_marginBottom="50dp">
         </ListView>
     </LinearLayout>
