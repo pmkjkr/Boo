@@ -1,6 +1,7 @@
 package com.donga.examples.bumin.listviewAdapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ public class MemberListViewAdapter extends BaseAdapter {
     private static final int ITEM_VIEW_TYPE_LIST = 1;
     private static final int ITEM_VIEW_TYPE_MAX = 3;
 
+    CustomViewHolder holder;
+
 //    boolean[] checkBoxState;
 
     // 아이템 데이터 리스트.
@@ -30,6 +33,14 @@ public class MemberListViewAdapter extends BaseAdapter {
 
     public MemberListViewAdapter() {
 //        checkBoxState = new boolean[listViewItemList.size()];
+    }
+
+    public void allCheck(int count) {
+//        holder.s_check.setChecked(true);
+        for(int i = 0; i<count; i++){
+            
+        }
+        Log.i("allCheck", "done?");
     }
 
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
@@ -54,7 +65,6 @@ public class MemberListViewAdapter extends BaseAdapter {
         final Context context = parent.getContext();
         int viewType = getItemViewType(position);
 
-        CustomViewHolder holder;
 
         convertView = null;
         if (convertView == null) {
@@ -76,23 +86,12 @@ public class MemberListViewAdapter extends BaseAdapter {
                 case ITEM_VIEW_TYPE_LIST:
                     convertView = inflater.inflate(R.layout.listview_manage_member,
                             parent, false);
-//                    holder.s_check = (CheckBox) convertView.findViewById(R.id.manage_member_check);
+                    holder.s_check = (CheckBox) convertView.findViewById(R.id.manage_member_check);
                     holder.s_id = (TextView) convertView.findViewById(R.id.manage_member_id);
                     holder.s_name = (TextView) convertView.findViewById(R.id.manage_member_name);
 
                     holder.s_id.setText(listViewItem.getS_id());
                     holder.s_name.setText(listViewItem.getS_name());
-//                    holder.s_check.setChecked(checkBoxState[position]);
-
-//                    holder.s_check.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View view) {
-//                            if(((CheckBox)view).isChecked()){
-//                                checkBoxState[position]=true;
-//                            }else{checkBoxState[position]=false;
-//                            }
-//                        }
-//                    });
 
                     break;
             }

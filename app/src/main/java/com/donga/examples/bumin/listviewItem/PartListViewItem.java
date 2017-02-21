@@ -16,6 +16,8 @@ public class PartListViewItem {
     private String content_subject;
     private String content_grade;
 
+    private String distin, grade_number;
+
     public String getContent_grade() {
         return content_grade;
     }
@@ -78,5 +80,21 @@ public class PartListViewItem {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getDistin() {
+        return distin;
+    }
+
+    public void setDistin(String distin) {
+        this.distin = distin;
+    }
+
+    public String getGrade_number() {
+        return grade_number;
+    }
+
+    public void setGrade_number(String grade_number) {
+        this.grade_number = grade_number;
     }
 }

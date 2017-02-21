@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -40,13 +40,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.StudentActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.ProActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.ProSubActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.HelpActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -55,7 +55,12 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.AlertDialogActivity"
-            android:theme="@android:style/Theme.Dialog">
+            android:theme="@android:style/Theme.Panel" />
+        <activity android:name=".activity.AttendActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.SendDialogActivity"
+            android:theme="@android:style/Theme.Panel">
         </activity>
 
         <!-- [START firebase_service] -->
@@ -71,8 +76,10 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
         <!-- [END firebase_iid_service] -->
 
+        <activity android:name=".activity.ManageLoginActivity"></activity>
     </application>
 
 </manifest>

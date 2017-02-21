@@ -7,10 +7,25 @@ import android.graphics.drawable.Drawable;
  */
 public class ProSubListViewItem {
 
-    public String pro_sub_name;
-    public String pro_sub_major;
+    public String pro_sub_name, pro_sub_major, pro_call_gone, pro_mail_gone;
     public Drawable pro_sub_call;
     public Drawable pro_sub_mail;
+
+    public String getPro_call_gone() {
+        return pro_call_gone;
+    }
+
+    public void setPro_call_gone(String pro_call_gone) {
+        this.pro_call_gone = pro_call_gone;
+    }
+
+    public String getPro_mail_gone() {
+        return pro_mail_gone;
+    }
+
+    public void setPro_mail_gone(String pro_mail_gone) {
+        this.pro_mail_gone = pro_mail_gone;
+    }
 
     public Drawable getPro_sub_call() {
         return pro_sub_call;

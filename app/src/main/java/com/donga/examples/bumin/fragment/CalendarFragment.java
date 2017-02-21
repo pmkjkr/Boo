@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.donga.examples.bumin.AppendLog;
 import com.donga.examples.bumin.R;
 import com.donga.examples.bumin.Singleton.DateSingleton;
 import com.donga.examples.bumin.retrofit.retrofitMeal.Interface_meal;
@@ -35,6 +36,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class CalendarFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     private ProgressDialog mProgressDialog;
+    AppendLog log = new AppendLog();
 
     @NonNull
     @Override
@@ -92,25 +94,32 @@ public class CalendarFragment extends DialogFragment implements DatePickerDialog
         call3.enqueue(new Callback<Master3>() {
             @Override
             public void onResponse(Call<Master3> call, Response<Master3> response) {
-                String source_guk = response.body().getResult_body().getInter();
-                guk.setText(Html.fromHtml(source_guk));
-                guk.setMovementMethod(LinkMovementMethod.getInstance());
+                if (response.body().getResult_code() == 1) {
+                    String source_guk = response.body().getResult_body().getInter();
+                    guk.setText(Html.fromHtml(source_guk));
+                    guk.setMovementMethod(LinkMovementMethod.getInstance());
 
-                String source_bumin = response.body().getResult_body().getBumin_kyo();
-                bumin.setText(Html.fromHtml(source_bumin));
-                bumin.setMovementMethod(LinkMovementMethod.getInstance());
+                    String source_bumin = response.body().getResult_body().getBumin_kyo();
+                    bumin.setText(Html.fromHtml(source_bumin));
+                    bumin.setMovementMethod(LinkMovementMethod.getInstance());
 
-                String source_gang = response.body().getResult_body().getGang();
-                gang.setText(Html.fromHtml(source_gang));
-                gang.setMovementMethod(LinkMovementMethod.getInstance());
+                    String source_gang = response.body().getResult_body().getGang();
+                    gang.setText(Html.fromHtml(source_gang));
+                    gang.setMovementMethod(LinkMovementMethod.getInstance());
 
-                hideProgressDialog();
+                    hideProgressDialog();
+                } else {
+                    hideProgressDialog();
+                    log.appendLog("inCalFragment code not matched");
+                    Toast.makeText(getContext(), "불러오기 실패", Toast.LENGTH_SHORT);
+                }
             }
 
             @Override
             public void onFailure(Call<Master3> call, Throwable t) {
                 hideProgressDialog();
-                Log.i("CALL3", "onFailure");
+                Toast.makeText(getContext(), "불러오기 실패", Toast.LENGTH_SHORT);
+                log.appendLog("inCalFragment failure");
                 t.printStackTrace();
             }
         });

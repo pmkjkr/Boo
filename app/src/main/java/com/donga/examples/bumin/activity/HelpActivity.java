@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 /**
  * Created by rhfoq on 2017-02-17.
  */
-public class HelpActivity  extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HelpActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.toolbar_help)
     Toolbar toolbar;
@@ -128,7 +128,6 @@ public class HelpActivity  extends AppCompatActivity implements NavigationView.O
             Intent intent = new Intent(getApplicationContext(), ManageActivity.class);
             startActivity(intent);
         }
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_help);

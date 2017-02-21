@@ -61,11 +61,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent(getApplicationContext(), StudentActivity.class);
         startActivity(intent);
     }
+
     @OnClick(R.id.menu_prof)
     void menu_prof() {
         Intent intent = new Intent(getApplicationContext(), ProActivity.class);
         startActivity(intent);
     }
+
     @OnClick(R.id.menu_site)
     void menu_site() {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.donga.ac.kr"));
@@ -119,8 +121,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime)  //연속 누를 때 2초 안에 안누르면 종료 x
             {
                 super.onBackPressed();
-            }
-            else    //종료
+            } else    //종료
             {
                 backPressedTime = tempTime;
                 Toast.makeText(getApplicationContext(), "'뒤로'버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
@@ -179,7 +180,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(getApplicationContext(), HelpActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_manage) {
-            Intent intent = new Intent(getApplicationContext(), ManageActivity.class);
+            Intent intent = new Intent(getApplicationContext(), ManageLoginActivity.class);
             startActivity(intent);
         }
 

@@ -70,24 +70,28 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Map data = remoteMessage.getData();
             PushSingleton.getInstance().setmMap(data);
             Log.i("FROM SINGLETON", String.valueOf(PushSingleton.getInstance().getmMap().get("contents")));
+            Log.i("FROM SINGLETON", String.valueOf(PushSingleton.getInstance().getmMap().get("category")));
+            if(PushSingleton.getInstance().getmMap().get("category").equals("normal")){
+                getRunActivity();
+                Bundle bun = new Bundle();
+                bun.putString("send", remoteMessage.getNotification().getTitle());
+                bun.putString("title", remoteMessage.getNotification().getBody());
+                bun.putString("contents", String.valueOf(PushSingleton.getInstance().getmMap().get("contents")));
+                Intent popupIntent = new Intent(getApplicationContext(), AlertDialogActivity.class);
+                popupIntent.putExtras(bun);
+                PendingIntent pie = PendingIntent.getActivity(getApplicationContext(), 0, popupIntent, PendingIntent.FLAG_ONE_SHOT);
+                try {
+                    pie.send();
+                } catch (PendingIntent.CanceledException e) {
+                    e.printStackTrace();
+                }
+            }else{
 
-
-            SharedPreferences sharedPreferences = getSharedPreferences("LOGIN3", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("contents", String.valueOf(data.get("contents")));
-
-
-            getRunActivity();
-            Bundle bun = new Bundle();
-            bun.putString("contents", String.valueOf(PushSingleton.getInstance().getmMap().get("contents")));
-            Intent popupIntent = new Intent(getApplicationContext(), AlertDialogActivity.class);
-            popupIntent.putExtras(bun);
-            PendingIntent pie = PendingIntent.getActivity(getApplicationContext(), 0, popupIntent, PendingIntent.FLAG_ONE_SHOT);
-            try {
-                pie.send();
-            } catch (PendingIntent.CanceledException e) {
-                e.printStackTrace();
             }
+
+//            SharedPreferences sharedPreferences = getSharedPreferences("LOGIN3", Context.MODE_PRIVATE);
+//            SharedPreferences.Editor editor = sharedPreferences.edit();
+//            editor.putString("contents", String.valueOf(data.get("contents")));
         }
 
 
@@ -131,10 +135,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     String getRunActivity() {
         ActivityManager activity_manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> task_info = activity_manager.getRunningTasks(9999);
-        for (int i = 0; i < task_info.size(); i++) {
-//            Log.d("getRunActivity", "[" + i + "] : "+ task_info.get(i).topActivity.getClassName());
-//            Log.d("getRunActivity", task_info.get(i).topActivity.getClassName());
-        }
         return task_info.get(0).topActivity.getClassName();
     }
 

@@ -15,7 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.donga.examples.bumin.AppendLog;
 import com.donga.examples.bumin.R;
 import com.donga.examples.bumin.Singleton.ProSingleton;
 import com.donga.examples.bumin.listviewAdapter.ProListViewAdapter;
@@ -35,6 +37,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class ProActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    AppendLog log = new AppendLog();
 
     @BindView(R.id.toolbar_pro)
     Toolbar toolbar;
@@ -81,7 +84,7 @@ public class ProActivity extends AppCompatActivity implements NavigationView.OnN
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                final ProListViewItem item = (ProListViewItem)adapterView.getItemAtPosition(position);
+                final ProListViewItem item = (ProListViewItem) adapterView.getItemAtPosition(position);
                 //retrofit 통신
                 Retrofit client = new Retrofit.Builder().baseUrl(getString(R.string.retrofit_url))
                         .addConverterFactory(GsonConverterFactory.create()).build();
@@ -90,16 +93,22 @@ public class ProActivity extends AppCompatActivity implements NavigationView.OnN
                 call.enqueue(new Callback<com.donga.examples.bumin.retrofit.retrofitProfessor.Master>() {
                     @Override
                     public void onResponse(Call<com.donga.examples.bumin.retrofit.retrofitProfessor.Master> call, Response<com.donga.examples.bumin.retrofit.retrofitProfessor.Master> response) {
-                        Log.i("onResponse", String.valueOf(response.body().getResult_code()));
-                        ProSingleton.getInstance().setProfessorArrayList(response.body().getResult_body());
+                        if (response.body().getResult_code() == 1) {
+                            ProSingleton.getInstance().setProfessorArrayList(response.body().getResult_body());
 
-                        Intent intent = new Intent(getApplicationContext(), ProSubActivity.class);
-                        intent.putExtra("name", item.getPro_main_name());
-                        startActivity(intent);
+                            Intent intent = new Intent(getApplicationContext(), ProSubActivity.class);
+                            intent.putExtra("name", item.getPro_main_name());
+                            startActivity(intent);
+                        } else {
+                            log.appendLog("inProActivity code not matched");
+                            Toast.makeText(getApplicationContext(), "불러오기 실패", Toast.LENGTH_SHORT);
+                        }
                     }
 
                     @Override
                     public void onFailure(Call<com.donga.examples.bumin.retrofit.retrofitProfessor.Master> call, Throwable t) {
+                        log.appendLog("inProActivity failure");
+                        Toast.makeText(getApplicationContext(), "불러오기 실패", Toast.LENGTH_SHORT);
                         t.printStackTrace();
                     }
                 });
@@ -187,17 +196,5 @@ public class ProActivity extends AppCompatActivity implements NavigationView.OnN
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-//    public static String serializeObjectToString(Object object) throws IOException {
-//
-//        try (
-//                ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
-//                GZIPOutputStream gzipOutputStream = new GZIPOutputStream(arrayOutputStream);
-//                ObjectOutputStream objectOutputStream = new ObjectOutputStream(gzipOutputStream);) {
-//            objectOutputStream.writeObject(object);
-//            objectOutputStream.flush();
-//            return new String(base64.encode(arrayOutputStream.toByteArray()));
-//        }
-//    }
 
 }

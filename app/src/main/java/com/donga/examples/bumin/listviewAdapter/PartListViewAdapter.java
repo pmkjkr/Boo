@@ -1,6 +1,7 @@
 package com.donga.examples.bumin.listviewAdapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,8 +66,6 @@ public class PartListViewAdapter extends BaseAdapter {
                 case ITEM_VIEW_TYPE_TITLE:
                     convertView = inflater.inflate(R.layout.listview_part_title,
                             parent, false);
-//                    TextView part_title_year = (TextView) convertView.findViewById(R.id.part_title_year) ;
-//                    TextView part_title_term = (TextView) convertView.findViewById(R.id.part_title_term) ;
                     holder.year = (TextView) convertView.findViewById(R.id.part_title_year) ;
                     holder.term = (TextView) convertView.findViewById(R.id.part_title_term) ;
 
@@ -76,8 +75,6 @@ public class PartListViewAdapter extends BaseAdapter {
                 case ITEM_VIEW_TYPE_NAME:
                     convertView = inflater.inflate(R.layout.listview_part_name,
                             parent, false);
-//                    TextView part_name_subject = (TextView) convertView.findViewById(R.id.part_name_subject) ;
-//                    TextView part_name_grade = (TextView) convertView.findViewById(R.id.part_name_grade) ;
                     holder.subject = (TextView) convertView.findViewById(R.id.part_name_subject) ;
                     holder.grade = (TextView) convertView.findViewById(R.id.part_name_grade) ;
 
@@ -88,15 +85,15 @@ public class PartListViewAdapter extends BaseAdapter {
                     convertView = inflater.inflate(R.layout.listview_part_content,
                             parent, false);
 
-//                    TextView part_content_subject = (TextView) convertView.findViewById(R.id.part_content_subject) ;
-//                    TextView part_content_grade = (TextView) convertView.findViewById(R.id.part_content_grade) ;
                     holder.subject2 = (TextView) convertView.findViewById(R.id.part_content_subject) ;
                     holder.grade2 = (TextView) convertView.findViewById(R.id.part_content_grade) ;
+                    holder.distin = (TextView) convertView.findViewById(R.id.part_content_distin_none);
+                    holder.grade_number = (TextView) convertView.findViewById(R.id.part_content_grade_number_none);
 
                     holder.subject2.setText(listViewItem.getContent_subject());
                     holder.grade2.setText(listViewItem.getContent_grade());
-//                    part_content_subject.setText(listViewItem.getContent_subject());
-//                    part_content_grade.setText(listViewItem.getContent_grade());
+                    holder.distin.setText(listViewItem.getDistin());
+                    holder.grade_number.setText(listViewItem.getGrade_number());
                     break;
             }
         }
@@ -114,6 +111,14 @@ public class PartListViewAdapter extends BaseAdapter {
     @Override
     public Object getItem(int position) {
         return listViewItemList.get(position) ;
+    }
+
+    public ArrayList<String> getItems(int position){
+        ArrayList<String> getItems = new ArrayList<>();
+        getItems.add(listViewItemList.get(position).getContent_subject());
+        getItems.add(listViewItemList.get(position).getDistin());
+        getItems.add(listViewItemList.get(position).getGrade_number());
+        return getItems;
     }
 
     // 첫 번째 아이템 추가를 위한 함수.
@@ -149,18 +154,22 @@ public class PartListViewAdapter extends BaseAdapter {
 //    }
 
     // 세 번째 아이템 추가를 위한 함수.
-    public void addItem2(String none,String subject, String grade) {
+    public void addItem2(String none, String subject, String grade, String distin, String grade_number) {
         PartListViewItem item = new PartListViewItem() ;
 
         item.setType(ITEM_VIEW_TYPE_CONTENT) ;
         item.setContent_none(none);
         item.setContent_subject(subject);
         item.setContent_grade(grade);
+        item.setDistin(distin);
+//        Log.i("setDistin", distin);
+        item.setGrade_number(grade_number);
+//        Log.i("setGrade_number", grade_number);
 
         listViewItemList.add(item);
     }
 
     public class CustomViewHolder {
-        public TextView year, term, subject, grade, subject2, grade2;
+        public TextView year, term, subject, grade, subject2, grade2, distin, grade_number;
     }
 }

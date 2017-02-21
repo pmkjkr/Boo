@@ -54,6 +54,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by rhfoq on 2017-02-15.
  */
 public class Stu_AchievFragment extends Fragment {
+    AppendLog log = new AppendLog();
 
     private FragmentManager fm;
     private ProgressDialog mProgressDialog;
@@ -72,12 +73,12 @@ public class Stu_AchievFragment extends Fragment {
     Button all_ok;
     @BindView(R.id.part_ok)
     Button part_ok;
-    @BindView(R.id.achiev_bottom)
-    LinearLayout achiev_bottom;
-    @BindView(R.id.distin)
-    TextView distin;
-    @BindView(R.id.below2)
-    ImageView below;
+//    @BindView(R.id.achiev_bottom)
+//    LinearLayout achiev_bottom;
+//    @BindView(R.id.distin)
+//    TextView distin;
+//    @BindView(R.id.below2)
+//    ImageView below;
     @BindView(R.id.achiev_year)
     Spinner achieve_year;
     @BindView(R.id.achiev_side)
@@ -86,7 +87,7 @@ public class Stu_AchievFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootview = inflater.inflate(R.layout.fragment_achiev, container, false);
-        ButterKnife.bind(this,rootview);
+        ButterKnife.bind(this, rootview);
 
         hash = new HashMap<String, Integer>();
         hash.put("전학기", 00);
@@ -110,33 +111,22 @@ public class Stu_AchievFragment extends Fragment {
         hash.put("동계국외협정대학", 63);
         final ArrayList<String> keyList = new ArrayList<>();
         Set key = hash.keySet();
-        for (Iterator iterator = key.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = key.iterator(); iterator.hasNext(); ) {
             String keyName = (String) iterator.next();
             keyList.add(keyName);
         }
 
         fm = getFragmentManager();
 
-        LayoutInflater layoutInflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View bottom = layoutInflater.inflate(R.layout.fragment_achiev_part, null);
 
-//        final ListView list_part = (ListView)bottom.findViewById(R.id.list_part);
-//
-//        list_part.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//        below.setOnClickListener(new View.OnClickListener() {
 //            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-//                Toast.makeText(getActivity(),"클릭",Toast.LENGTH_SHORT).show();
-//                achiev_bottom.setVisibility(View.VISIBLE);
-//                distin.setText("바껴");
+//            public void onClick(View view) {
+//                achiev_bottom.setVisibility(View.GONE);
 //            }
 //        });
-
-        below.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                achiev_bottom.setVisibility(View.GONE);
-            }
-        });
 
         achiev_all.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -145,7 +135,7 @@ public class Stu_AchievFragment extends Fragment {
                     all_ok_card.setVisibility(View.VISIBLE);
                     part_layout.setVisibility(View.GONE);
                     ArrayList<String> years = new ArrayList<String>();
-                    for(int i = Integer.parseInt(new SimpleDateFormat("yyyy").format(new Date(System.currentTimeMillis()))); i>=Integer.parseInt(InfoSingleton.getInstance().getYear()); i--){
+                    for (int i = Integer.parseInt(new SimpleDateFormat("yyyy").format(new Date(System.currentTimeMillis()))); i >= Integer.parseInt(InfoSingleton.getInstance().getYear()); i--) {
                         years.add(String.valueOf(i));
                     }
                     ArrayAdapter adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, years);
@@ -167,7 +157,7 @@ public class Stu_AchievFragment extends Fragment {
     }
 
     @OnClick(R.id.all_ok)
-    void allOkClicked(){
+    void allOkClicked() {
         showProgressDialog();
         //retrofit 통신
         Retrofit client = new Retrofit.Builder().baseUrl(getString(R.string.retrofit_url))
@@ -178,23 +168,31 @@ public class Stu_AchievFragment extends Fragment {
             call.enqueue(new Callback<Master>() {
                 @Override
                 public void onResponse(Call<Master> call, Response<Master> response) {
-                    GradeSingleton.getInstance().setAllGrade(response.body().getResult_body().getAllGrade());
-                    GradeSingleton.getInstance().setAvgGrade(response.body().getResult_body().getAvgGrade());
-                    GradeSingleton.getInstance().setDetail(response.body().getResult_body().getDetail());
-                    Log.i("ACHIFRAG GRADESINGLETON", "input");
-                    hideProgressDialog();
+                    if (response.body().getResult_code() == 1) {
+                        GradeSingleton.getInstance().setAllGrade(response.body().getResult_body().getAllGrade());
+                        GradeSingleton.getInstance().setAvgGrade(response.body().getResult_body().getAvgGrade());
+                        GradeSingleton.getInstance().setDetail(response.body().getResult_body().getDetail());
+                        Log.i("ACHIFRAG GRADESINGLETON", "input");
+                        hideProgressDialog();
 
-                    hide.setVisibility(View.VISIBLE);
-                    FragmentTransaction ft = fm.beginTransaction();
-                    Stu_Achiev_All_Fragment achiev_all_fragment = new Stu_Achiev_All_Fragment();
-                    ft.replace(R.id.frag_change, achiev_all_fragment);
-                    ft.commit();
+                        hide.setVisibility(View.VISIBLE);
+                        FragmentTransaction ft = fm.beginTransaction();
+                        Stu_Achiev_All_Fragment achiev_all_fragment = new Stu_Achiev_All_Fragment();
+                        ft.replace(R.id.frag_change, achiev_all_fragment);
+                        ft.commit();
+                    } else {
+                        hideProgressDialog();
+                        log.appendLog("inStu_AchievFragment code not matched");
+                        Toast.makeText(getContext(), "불러오기 실패", Toast.LENGTH_SHORT);
+                    }
                 }
+
                 @Override
                 public void onFailure(Call<Master> call, Throwable t) {
                     hideProgressDialog();
                     t.printStackTrace();
-                    appendLog.appendLog("ACHIEVE_ALL onFailure");
+                    Toast.makeText(getContext(), "불러오기 실패", Toast.LENGTH_SHORT);
+                    appendLog.appendLog("inStu_AchievFragment failure");
                 }
             });
         } catch (Exception e) {
@@ -203,10 +201,9 @@ public class Stu_AchievFragment extends Fragment {
     }
 
     @OnClick(R.id.part_ok)
-    void onPartOkClicked(){
+    void onPartOkClicked() {
 
         showProgressDialog();
-
 
         //retrofit 통신
         Retrofit client = new Retrofit.Builder().baseUrl(getString(R.string.retrofit_url))
@@ -215,15 +212,15 @@ public class Stu_AchievFragment extends Fragment {
         try {
             Call<com.donga.examples.bumin.retrofit.retrofitAchieveSep.Master> call = ach.getSepGrade(InfoSingleton.getInstance().getStuId(),
                     Decrypt(InfoSingleton.getInstance().getStuPw(), getString(R.string.decrypt_key)), achieve_year.getSelectedItem().toString(), String.valueOf(hash.get(achiev_side.getSelectedItem().toString())));
-            Log.i("??", "year:"+achieve_year.getSelectedItem().toString()+",side:"+String.valueOf(hash.get(achiev_side.getSelectedItem().toString())));
+            Log.i("??", "year:" + achieve_year.getSelectedItem().toString() + ",side:" + String.valueOf(hash.get(achiev_side.getSelectedItem().toString())));
             call.enqueue(new Callback<com.donga.examples.bumin.retrofit.retrofitAchieveSep.Master>() {
                 @Override
                 public void onResponse(Call<com.donga.examples.bumin.retrofit.retrofitAchieveSep.Master> call, Response<com.donga.examples.bumin.retrofit.retrofitAchieveSep.Master> response) {
-                    if(response.body().getResult_code()==0 || response.body().getResult_code()==500){
+                    if (response.body().getResult_code() == 0 || response.body().getResult_code() == 500) {
                         hideProgressDialog();
-                        Log.e("ERROR", "500");
+                        log.appendLog("inStu_AchievFragment code not matched");
                         Toast.makeText(getContext(), "조회 실패하였습니다.", Toast.LENGTH_SHORT).show();
-                    }else{
+                    } else {
                         Log.i("ACHIEVE_SEP onResponse", response.body().getResult_body().getAllGrade());
                         hideProgressDialog();
                         GradeSingleton.getInstance().setPartGrade(response.body().getResult_body().getAllGrade());
@@ -236,13 +233,14 @@ public class Stu_AchievFragment extends Fragment {
                         ft.replace(R.id.frag_change, achiev_part_fragment);
                         ft.commit();
                     }
-
                 }
+
                 @Override
                 public void onFailure(Call<com.donga.examples.bumin.retrofit.retrofitAchieveSep.Master> call, Throwable t) {
                     hideProgressDialog();
                     t.printStackTrace();
-                    appendLog.appendLog("ACHIEVE_SEP onFailure");
+                    Toast.makeText(getContext(), "조회 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                    appendLog.appendLog("inStu_AchievFragment failure");
                 }
             });
         } catch (Exception e) {
@@ -261,11 +259,6 @@ public class Stu_AchievFragment extends Fragment {
         SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "AES");
         IvParameterSpec ivSpec = new IvParameterSpec(keyBytes);
         cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
-//               BASE64Decoder decoder = new BASE64Decoder();
-//               Base64.decode(input, flags)
-//               byte [] results = cipher.doFinal(decoder.decodeBuffer(text));
-        // BASE64Decoder decoder = new BASE64Decoder();
-        // Base64.decode(input, flags)
         byte[] results = cipher.doFinal(Base64.decode(text, 0));
         return new String(results, "UTF-8");
     }

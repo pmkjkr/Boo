@@ -36,14 +36,11 @@ public class FirstActivity extends AppCompatActivity {
     final String SFLAG = "LOGIN";
     public final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
 
-    private ProgressDialog mProgressDialog;
     AppendLog log = new AppendLog();
 
     @Override
     protected void onPause() {
         super.onPause();
-
-        Log.i("onPause", "11");
         finish();
     }
 
@@ -89,6 +86,7 @@ public class FirstActivity extends AppCompatActivity {
             if (getIntent().getExtras().getString("contents") != null) {
                 Log.i("INTENT", getIntent().getExtras().getString("contents"));
                 PushSingleton.getInstance().setmString(getIntent().getExtras().getString("contents"));
+                log.appendLog("inFirstActivity" + getIntent().getExtras().getString("contents"));
             }
         }
 
@@ -104,47 +102,43 @@ public class FirstActivity extends AppCompatActivity {
                 call4 = room.loginUser(String.valueOf(sharedPreferences.getInt("stuID", 0)), Decrypt(sharedPreferences.getString("pw", ""), getString(R.string.decrypt_key)));
             } catch (Exception e) {
                 e.printStackTrace();
-                log.appendLog("LOGIN FAILED");
+                log.appendLog("inFirstActivity LOGIN FAILED");
             }
             call4.enqueue(new Callback<Master>() {
                 @Override
                 public void onResponse(Call<Master> call, Response<Master> response) {
-                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    if (response.body().getResult_code() == 1) {
+                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
 
-                    InfoSingleton.getInstance().setStuId(String.valueOf(sharedPreferences.getInt("stuID", 0)));
-                    InfoSingleton.getInstance().setStuPw(sharedPreferences.getString("pw", ""));
+                        InfoSingleton.getInstance().setStuId(String.valueOf(sharedPreferences.getInt("stuID", 0)));
+                        InfoSingleton.getInstance().setStuPw(sharedPreferences.getString("pw", ""));
 
-                    if (PushSingleton.getInstance().getmString() != null) {
-                        Bundle bun = new Bundle();
-                        bun.putString("contents", PushSingleton.getInstance().getmString());
-                        intent.putExtras(bun);
+                        if (PushSingleton.getInstance().getmString() != null) {
+                            Bundle bun = new Bundle();
+                            bun.putString("contents", PushSingleton.getInstance().getmString());
+                            intent.putExtras(bun);
+                            log.appendLog(PushSingleton.getInstance().getmString());
+                        }
+                        startActivity(intent);
+                    } else {
+                        log.appendLog("inFirstActivity Login code not matched move to LoginActivity");
+                        moveToLoginActivity();
                     }
-                    startActivity(intent);
                 }
 
                 @Override
                 public void onFailure(Call<Master> call, Throwable t) {
                     //retrofit 통신 실패시 SharedPreferences 삭제 후 LoginActivity로 이동
                     t.printStackTrace();
-
-                    log.appendLog("AUTO LOGIN FAILED");
-
-                    SharedPreferences sharedPreferences = getSharedPreferences(SFLAG, Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.clear();
-
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
+                    log.appendLog("inFirstActivity AUTO LOGIN FAILED");
+                    moveToLoginActivity();
                 }
             });
 
 
         } else {
             //기기에 저장된 SharedPreferences 없으면 LoginActivity로 이동
-            Log.i("FirstActivity", "no sharedPreferences");
-
-            log.appendLog("no sharedPreferences");
-
+            log.appendLog("inFirstActivity no sharedPreferences move to LoginActivity");
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
         }
@@ -176,12 +170,16 @@ public class FirstActivity extends AppCompatActivity {
         SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "AES");
         IvParameterSpec ivSpec = new IvParameterSpec(keyBytes);
         cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
-//               BASE64Decoder decoder = new BASE64Decoder();
-//               Base64.decode(input, flags)
-//               byte [] results = cipher.doFinal(decoder.decodeBuffer(text));
-        // BASE64Decoder decoder = new BASE64Decoder();
-        // Base64.decode(input, flags)
         byte[] results = cipher.doFinal(Base64.decode(text, 0));
         return new String(results, "UTF-8");
+    }
+
+    public void moveToLoginActivity() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SFLAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(intent);
     }
 }

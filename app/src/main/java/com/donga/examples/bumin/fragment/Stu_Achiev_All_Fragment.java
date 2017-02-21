@@ -7,9 +7,13 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.donga.examples.bumin.AppendLog;
 import com.donga.examples.bumin.listviewAdapter.PartListViewAdapter;
 import com.donga.examples.bumin.R;
 import com.donga.examples.bumin.Singleton.GradeSingleton;
@@ -27,6 +31,7 @@ import butterknife.ButterKnife;
  * Created by rhfoq on 2017-02-15.
  */
 public class Stu_Achiev_All_Fragment extends Fragment {
+    AppendLog log = new AppendLog();
     private ProgressDialog mProgressDialog;
     @BindView(R.id.list_all)
     ListView list_all;
@@ -35,6 +40,14 @@ public class Stu_Achiev_All_Fragment extends Fragment {
     @BindView(R.id.tv_getAllAverage)
     TextView tv_getAllAverage;
 
+    @BindView(R.id.achiev_bottom)
+    LinearLayout achiev_bottom;
+    @BindView(R.id.below2)
+    ImageView below;
+    @BindView(R.id.distin)
+    TextView distin;
+    @BindView(R.id.grade_number)
+    TextView grade_number;
 
     private PartListViewAdapter adapter;
 
@@ -43,17 +56,30 @@ public class Stu_Achiev_All_Fragment extends Fragment {
         final View rootview = inflater.inflate(R.layout.fragment_achiev_all, container, false);
         ButterKnife.bind(this, rootview);
 
+        below.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                achiev_bottom.setVisibility(View.GONE);
+            }
+        });
 //        showProgressDialog();
 
         adapter = new PartListViewAdapter();
         list_all.setAdapter(adapter);
 
-//        list_all.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//            }
-//        });
+
+        list_all.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(adapter.getItems(position).get(1)!=null){
+                    distin.setText(adapter.getItems(position).get(1));
+                    grade_number.setText(adapter.getItems(position).get(2));
+                    achiev_bottom.setVisibility(View.VISIBLE);
+                }else{
+                    achiev_bottom.setVisibility(View.GONE);
+                }
+            }
+        });
 
         tv_getAllGrade.setText(GradeSingleton.getInstance().getAllGrade());
         tv_getAllAverage.setText(GradeSingleton.getInstance().getAvgGrade());
@@ -75,19 +101,18 @@ public class Stu_Achiev_All_Fragment extends Fragment {
                 fTitle.add(DetailList.get(i).get(0));
                 sTitle.add(DetailList.get(i).get(1));
             }
-
         }
         for(int q = 0; q<yearList.size(); q++){
             adapter.addItem(fTitle.get(q),sTitle.get(q));
             adapter.addItem1("교과목명", "성적");
             if(q<yearList.size()-1) {
                 for (int j = Integer.parseInt(yearList.get(q)); j < Integer.parseInt(yearList.get(q+1)); j++) {
-                    adapter.addItem2(String.valueOf(j), DetailList.get(j).get(3), DetailList.get(j).get(6));
+                    adapter.addItem2(String.valueOf(j), DetailList.get(j).get(3), DetailList.get(j).get(6), DetailList.get(j).get(4), DetailList.get(j).get(5));
                     position.add(j);
                 }
             }else{
                 for(int k = Integer.parseInt(yearList.get(q)); k<GradeDetailSize; k++){
-                    adapter.addItem2(String.valueOf(k), DetailList.get(k).get(3), DetailList.get(k).get(6));
+                    adapter.addItem2(String.valueOf(k), DetailList.get(k).get(3), DetailList.get(k).get(6), DetailList.get(k).get(4), DetailList.get(k).get(5));
                     position.add(k);
                 }
             }
@@ -127,6 +152,7 @@ public class Stu_Achiev_All_Fragment extends Fragment {
             mProgressDialog.dismiss();
         }
     }
+
 
 
 }

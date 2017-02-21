@@ -18,7 +18,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.donga.examples.bumin.AppendLog;
 import com.donga.examples.bumin.R;
 import com.donga.examples.bumin.listviewAdapter.RoomListViewAdapter;
 import com.donga.examples.bumin.retrofit.retrofitRoom.Interface_room;
@@ -43,6 +45,7 @@ public class RoomActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private ProgressDialog mProgressDialog;
+    AppendLog log = new AppendLog();
 
     @BindView(R.id.toolbar_room)
     Toolbar toolbar;
@@ -73,7 +76,7 @@ public class RoomActivity extends AppCompatActivity
 
         showProgressDialog();
 
-        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swiper);
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiper);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -82,9 +85,7 @@ public class RoomActivity extends AppCompatActivity
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-
         retrofit();
-
     }
 
     @OnClick(R.id.iv_room)
@@ -186,22 +187,28 @@ public class RoomActivity extends AppCompatActivity
         call4.enqueue(new Callback<Master4>() {
             @Override
             public void onResponse(Call<Master4> call, Response<Master4> response) {
-                // Adapter 생성
-                RoomListViewAdapter adapter = new RoomListViewAdapter();
-                // Adapter달기
-                listview.setAdapter(adapter);
-                for (int i = 0; i < response.body().getResult_body().size(); i++) {
-                    adapter.addItem(response.body().getResult_body().get(i).getLoc(),
-                            response.body().getResult_body().get(i).getAll(),
-                            response.body().getResult_body().get(i).getUse(),
-                            response.body().getResult_body().get(i).getRemain(),
-                            response.body().getResult_body().get(i).getUtil());
-                    if (validateEmail(response.body().getResult_body().get(i).getUtil())) {
-                        header = getLayoutInflater().inflate(R.layout.listview_room, null, false);
-                        tv_room5 = (TextView)header.findViewById(R.id.text_room5);
-                        Log.i("100%", "100%");
-                        tv_room5.setTextColor(Color.RED);
+                if (response.body().getResult_code() == 1) {
+                    // Adapter 생성
+                    RoomListViewAdapter adapter = new RoomListViewAdapter();
+                    // Adapter달기
+                    listview.setAdapter(adapter);
+                    for (int i = 0; i < response.body().getResult_body().size(); i++) {
+                        adapter.addItem(response.body().getResult_body().get(i).getLoc(),
+                                response.body().getResult_body().get(i).getAll(),
+                                response.body().getResult_body().get(i).getUse(),
+                                response.body().getResult_body().get(i).getRemain(),
+                                response.body().getResult_body().get(i).getUtil());
+                        if (validateEmail(response.body().getResult_body().get(i).getUtil())) {
+                            header = getLayoutInflater().inflate(R.layout.listview_room, null, false);
+                            tv_room5 = (TextView) header.findViewById(R.id.text_room5);
+                            Log.i("100%", "100%");
+                            tv_room5.setTextColor(Color.RED);
+                        }
+                        hideProgressDialog();
                     }
+                } else {
+                    log.appendLog("inRoomActivity code not matched");
+                    Toast.makeText(getApplicationContext(), "불러오기 실패", Toast.LENGTH_SHORT);
                     hideProgressDialog();
                 }
             }
@@ -209,7 +216,8 @@ public class RoomActivity extends AppCompatActivity
             @Override
             public void onFailure(Call<Master4> call, Throwable t) {
                 hideProgressDialog();
-                Log.i("CALL4", "onFailure");
+                Toast.makeText(getApplicationContext(), "불러오기 실패", Toast.LENGTH_SHORT);
+                log.appendLog("inRoomActivity failure");
                 t.printStackTrace();
             }
         });

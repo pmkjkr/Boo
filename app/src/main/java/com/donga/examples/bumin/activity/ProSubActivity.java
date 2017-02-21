@@ -56,7 +56,6 @@ public class ProSubActivity extends AppCompatActivity implements NavigationView.
         Intent i1 = getIntent();
 
         navigationView.setNavigationItemSelectedListener(this);
-        Log.i("ddd", i1.getStringExtra("name"));
         pro_sub.setText(i1.getStringExtra("name"));
 
         ProSubListViewAdapter adapter = new ProSubListViewAdapter();
@@ -66,19 +65,36 @@ public class ProSubActivity extends AppCompatActivity implements NavigationView.
 
         for (int i = 0; i < professorArrayList.size(); i++) {
             if (professorArrayList.get(i).getEmail().equals(".")) {
-                adapter.addItem(professorArrayList.get(i).getName(), professorArrayList.get(i).getMajor(), getResources().getDrawable(R.drawable.call), getResources().getDrawable(R.drawable.arrow));
-                Log.i("for" + i, "dd");
+                if(professorArrayList.get(i).getTel().equals(".")){
+                    // 둘 다 없을 때
+                    adapter.addItem(professorArrayList.get(i).getName(), professorArrayList.get(i).getMajor(),
+                            getResources().getDrawable(R.drawable.call_gone), getResources().getDrawable(R.drawable.phone_gone),
+                            professorArrayList.get(i).getTel(), professorArrayList.get(i).getEmail());
+                }else{
+                    // 이메일은 없고 전화번호가 있을 때
+                    adapter.addItem(professorArrayList.get(i).getName(), professorArrayList.get(i).getMajor(),
+                            getResources().getDrawable(R.drawable.call), getResources().getDrawable(R.drawable.phone_gone),
+                            professorArrayList.get(i).getTel(), professorArrayList.get(i).getEmail());
+                }
             } else if (professorArrayList.get(i).getTel().equals(".")) {
-                adapter.addItem(professorArrayList.get(i).getName(), professorArrayList.get(i).getMajor(), getResources().getDrawable(R.drawable.arrow), getResources().getDrawable(R.drawable.tomail));
-                Log.i("for" + i, "dd2");
-
+                if(professorArrayList.get(i).getEmail().equals(".")){
+                    // 둘 다 없을 때
+                    adapter.addItem(professorArrayList.get(i).getName(), professorArrayList.get(i).getMajor(),
+                            getResources().getDrawable(R.drawable.call_gone), getResources().getDrawable(R.drawable.phone_gone),
+                            professorArrayList.get(i).getTel(), professorArrayList.get(i).getEmail());
+                }else{
+                    // 전화번호는 없고 이메일이 있을 때
+                    adapter.addItem(professorArrayList.get(i).getName(), professorArrayList.get(i).getMajor(),
+                            getResources().getDrawable(R.drawable.call_gone), getResources().getDrawable(R.drawable.tomail),
+                            professorArrayList.get(i).getTel(), professorArrayList.get(i).getEmail());
+                }
             } else {
-                adapter.addItem(professorArrayList.get(i).getName(), professorArrayList.get(i).getMajor(), getResources().getDrawable(R.drawable.call), getResources().getDrawable(R.drawable.tomail));
-                Log.i("for" + i, "dd3");
-
+                // 둘 다 있을 때
+                adapter.addItem(professorArrayList.get(i).getName(), professorArrayList.get(i).getMajor(),
+                        getResources().getDrawable(R.drawable.call), getResources().getDrawable(R.drawable.tomail),
+                        professorArrayList.get(i).getTel(), professorArrayList.get(i).getEmail());
             }
         }
-
     }
 
 

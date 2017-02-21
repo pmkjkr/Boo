@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.donga.examples.bumin.AppendLog;
 import com.donga.examples.bumin.fragment.CalendarFragment;
 import com.donga.examples.bumin.R;
 import com.donga.examples.bumin.retrofit.retrofitMeal.Interface_meal;
@@ -43,9 +44,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class ResActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    AppendLog log = new AppendLog();
 
     private ProgressDialog mProgressDialog;
-    public static int count=0;
+    public static int count = 0;
 
     @BindView(R.id.toolbar_res)
     Toolbar toolbar;
@@ -207,10 +209,6 @@ public class ResActivity extends AppCompatActivity
     public void retrofit(String getTime) {
         showProgressDialog();
 
-//        SimpleDateFormat msimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        Date currentTime = new Date();
-//        String nowTime = msimpleDateFormat.format(currentTime);
-
         Retrofit client = new Retrofit.Builder().baseUrl(getString(R.string.retrofit_url))
                 .addConverterFactory(GsonConverterFactory.create()).build();
         Interface_meal meal = client.create(Interface_meal.class);
@@ -218,25 +216,30 @@ public class ResActivity extends AppCompatActivity
         call3.enqueue(new Callback<Master3>() {
             @Override
             public void onResponse(Call<Master3> call, Response<Master3> response) {
-                String source_guk = response.body().getResult_body().getInter();
-                guk.setText(Html.fromHtml(source_guk));
-                guk.setMovementMethod(LinkMovementMethod.getInstance());
+                if (response.body().getResult_code() == 1) {
+                    String source_guk = response.body().getResult_body().getInter();
+                    guk.setText(Html.fromHtml(source_guk));
+                    guk.setMovementMethod(LinkMovementMethod.getInstance());
 
-                String source_bumin = response.body().getResult_body().getBumin_kyo();
-                bumin.setText(Html.fromHtml(source_bumin));
-                bumin.setMovementMethod(LinkMovementMethod.getInstance());
+                    String source_bumin = response.body().getResult_body().getBumin_kyo();
+                    bumin.setText(Html.fromHtml(source_bumin));
+                    bumin.setMovementMethod(LinkMovementMethod.getInstance());
 
-                String source_gang = response.body().getResult_body().getGang();
-                gang.setText(Html.fromHtml(source_gang));
-                gang.setMovementMethod(LinkMovementMethod.getInstance());
+                    String source_gang = response.body().getResult_body().getGang();
+                    gang.setText(Html.fromHtml(source_gang));
+                    gang.setMovementMethod(LinkMovementMethod.getInstance());
 
-                hideProgressDialog();
+                    hideProgressDialog();
+                } else {
+                    log.appendLog("inResActivity code not matched");
+                    hideProgressDialog();
+                }
             }
 
             @Override
             public void onFailure(Call<Master3> call, Throwable t) {
+                log.appendLog("inResActivity failure");
                 hideProgressDialog();
-                Log.i("CALL3", "onFailure");
                 t.printStackTrace();
             }
         });
@@ -255,6 +258,7 @@ public class ResActivity extends AppCompatActivity
     private void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.hide();
+            mProgressDialog.dismiss();
         }
     }
 }

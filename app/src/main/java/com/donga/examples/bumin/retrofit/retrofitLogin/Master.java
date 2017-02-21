@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 public class Master {
     int result_code;
-    ArrayList<Login> result_body;
+    Login result_body;
 
-    public ArrayList<Login> getResult_body() {
+    public Login getResult_body() {
         return result_body;
     }
 

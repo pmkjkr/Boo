@@ -1,6 +1,7 @@
 package com.donga.examples.bumin.Singleton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by pmk on 17. 2. 17.
@@ -12,6 +13,7 @@ public class GradeSingleton {
     ArrayList<Integer> position;
     ArrayList<String> year;
     ArrayList<ArrayList<String>> detail2;
+    HashMap<String, HashMap<String, String>> bottom;
 
     public String getPartAvg() {
         return partAvg;
@@ -83,5 +85,13 @@ public class GradeSingleton {
 
     public void setDetail2(ArrayList<ArrayList<String>> detail2) {
         this.detail2 = detail2;
+    }
+
+    public HashMap<String, HashMap<String, String>> getBottom() {
+        return bottom;
+    }
+
+    public void setBottom(HashMap<String, HashMap<String, String>> bottom) {
+        this.bottom = bottom;
     }
 }

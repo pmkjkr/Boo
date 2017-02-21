@@ -6,6 +6,8 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,15 +25,21 @@ import butterknife.ButterKnife;
  * Created by rhfoq on 2017-02-15.
  */
 public class Stu_Achiev_Part_Fragment extends Fragment {
-    private LinearLayout achiev_bottom;
-    private CardView below;
-
     @BindView(R.id.list_part)
     ListView list_part;
     @BindView(R.id.get)
     TextView get;
     @BindView(R.id.aver)
     TextView aver;
+
+    @BindView(R.id.achiev_bottom)
+    LinearLayout achiev_bottom;
+    @BindView(R.id.below2)
+    ImageView below;
+    @BindView(R.id.distin)
+    TextView distin;
+    @BindView(R.id.grade_number)
+    TextView grade_number;
 
     private PartListViewAdapter adapter;
 
@@ -40,8 +48,28 @@ public class Stu_Achiev_Part_Fragment extends Fragment {
         final View rootview = inflater.inflate(R.layout.fragment_achiev_part, container, false);
         ButterKnife.bind(this,rootview);
 
+        below.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                achiev_bottom.setVisibility(View.GONE);
+            }
+        });
+
         adapter = new PartListViewAdapter();
         list_part.setAdapter(adapter);
+
+        list_part.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(adapter.getItems(position).get(1)!=null){
+                    distin.setText(adapter.getItems(position).get(1));
+                    grade_number.setText(adapter.getItems(position).get(2));
+                    achiev_bottom.setVisibility(View.VISIBLE);
+                }else{
+                    achiev_bottom.setVisibility(View.GONE);
+                }
+            }
+        });
 
         get.setText(GradeSingleton.getInstance().getPartGrade());
         aver.setText(GradeSingleton.getInstance().getPartAvg());
@@ -70,23 +98,16 @@ public class Stu_Achiev_Part_Fragment extends Fragment {
             adapter.addItem1("교과목명", "성적");
             if(q<yearList.size()-1) {
                 for (int j = Integer.parseInt(yearList.get(q)); j < Integer.parseInt(yearList.get(q+1)); j++) {
-                    adapter.addItem2(String.valueOf(j), DetailList.get(j).get(3), DetailList.get(j).get(6));
+                    adapter.addItem2(String.valueOf(j), DetailList.get(j).get(3), DetailList.get(j).get(6), DetailList.get(j).get(4), DetailList.get(j).get(5));
                     position.add(j);
                 }
             }else{
                 for(int k = Integer.parseInt(yearList.get(q)); k<GradeDetailSize; k++){
-                    adapter.addItem2(String.valueOf(k), DetailList.get(k).get(3), DetailList.get(k).get(6));
+                    adapter.addItem2(String.valueOf(k), DetailList.get(k).get(3), DetailList.get(k).get(6), DetailList.get(k).get(4), DetailList.get(k).get(5));
                     position.add(k);
                 }
             }
         }
-
-//        adapter.addItem("2014","1학기");
-//        adapter.addItem1("교과목명","성적");
-//        adapter.addItem2("d","컴퓨터구조와운영체제","B+");
-//        adapter.addItem2("d","디지털정보활용","C+");
-//        adapter.addItem2("d","새로운문화속의음악(바하에서K-POP까지)","C+");
-//        adapter.addItem2("d","경영학원론","A");
 
         return rootview;
     }

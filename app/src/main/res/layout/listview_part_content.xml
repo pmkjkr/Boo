@@ -14,6 +14,18 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:id="@+id/part_content_distin_none"
+        android:layout_weight="0.1"
+        android:visibility="gone"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/part_content_grade_number_none"
+        android:layout_weight="0.1"
+        android:visibility="gone"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:id="@+id/part_content_subject"
         android:text="교과목명"
         android:layout_weight="8"

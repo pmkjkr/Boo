@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.donga.examples.bumin.AppendLog;
 import com.donga.examples.bumin.R;
 import com.donga.examples.bumin.TabPagerAdapter_Stu;
 
@@ -47,8 +48,6 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-
-//        Log.i("STORAGE", String.valueOf(getApplicationContext().getFilesDir()));
 
         // Initializing the TabLayout
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);

@@ -2,6 +2,7 @@ package com.donga.examples.bumin.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.donga.examples.bumin.listviewItem.MemberListViewItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by rhfoq on 2017-02-15.
@@ -23,8 +25,8 @@ import butterknife.ButterKnife;
 public class Manage_MemberFragment extends Fragment{
     @BindView(R.id.list_member)
     ListView list_member;
-//    @BindView(R.id.manage_member_divi)
-//    TextView member_divi;
+    @BindView(R.id.tv_allSelect)
+    TextView tv_allSelect;
 
     private MemberListViewAdapter adapter;
 
@@ -52,6 +54,17 @@ public class Manage_MemberFragment extends Fragment{
         adapter.addItem1("1619142","김현정");
         adapter.addItem1("1619142","김현정");
 
+        Log.i("COUNT", String.valueOf(adapter.getCount()));
+
         return rootview;
+    }
+
+    @OnClick(R.id.tv_allSelect)
+    void onAllSelectClicked(){
+        int count = adapter.getCount();
+        for(int i = 0; i<count; i++){
+            list_member.setItemChecked(i, true);
+        }
+        Log.i("onAllSelectClicked", "done");
     }
 }

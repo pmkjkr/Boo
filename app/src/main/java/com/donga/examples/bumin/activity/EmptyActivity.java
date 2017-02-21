@@ -24,7 +24,9 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.donga.examples.bumin.AppendLog;
 import com.donga.examples.bumin.R;
 import com.donga.examples.bumin.listviewAdapter.EmptyListViewAdapter;
 import com.donga.examples.bumin.retrofit.retrofitEmpty.Interface_Empty;
@@ -48,6 +50,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class EmptyActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private ProgressDialog mProgressDialog;
+    AppendLog log = new AppendLog();
 
     BottomSheetBehavior behavior;
     EmptyListViewAdapter adapter;
@@ -135,7 +138,7 @@ public class EmptyActivity extends AppCompatActivity
     }
 
     @OnClick(R.id.fab_empty)
-    void onFab_EmptyClicked(){
+    void onFab_EmptyClicked() {
         if (behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
             behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         } else {
@@ -148,8 +151,6 @@ public class EmptyActivity extends AppCompatActivity
         behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
         String empty_day_day = empty_day.getSelectedItem().toString();
-        Log.i("empty_clock1", empty_clock1.getSelectedItem().toString());
-        Log.i("empty_clock2", empty_clock2.getSelectedItem().toString());
 
         switch (empty_day_day) {
             case "월":
@@ -180,21 +181,28 @@ public class EmptyActivity extends AppCompatActivity
         call.enqueue(new Callback<com.donga.examples.bumin.retrofit.retrofitEmpty.Master>() {
             @Override
             public void onResponse(Call<com.donga.examples.bumin.retrofit.retrofitEmpty.Master> call, Response<com.donga.examples.bumin.retrofit.retrofitEmpty.Master> response) {
-                // Adapter 생성
-                adapter = new EmptyListViewAdapter();
-                // 리스트뷰 참조 및 Adapter달기
-                listview.setAdapter(adapter);
-                // 리스트뷰 아이템 추가
-                for (int i = 0; i < response.body().getResult_body().size(); i++) {
-                    adapter.addItem(response.body().getResult_body().get(i).getRoom_no());
+                if (response.body().getResult_code() == 1) {
+                    // Adapter 생성
+                    adapter = new EmptyListViewAdapter();
+                    // 리스트뷰 참조 및 Adapter달기
+                    listview.setAdapter(adapter);
+                    // 리스트뷰 아이템 추가
+                    for (int i = 0; i < response.body().getResult_body().size(); i++) {
+                        adapter.addItem(response.body().getResult_body().get(i).getRoom_no());
+                        hideProgressDialog();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "불러오기 실패", Toast.LENGTH_SHORT).show();
                     hideProgressDialog();
+                    log.appendLog("inEmptyActivity code not matched");
                 }
             }
 
             @Override
             public void onFailure(Call<com.donga.examples.bumin.retrofit.retrofitEmpty.Master> call, Throwable t) {
                 hideProgressDialog();
-                Log.i("EMPTY onFailure", "dd");
+                log.appendLog("inEmptyActivity failure");
+                Toast.makeText(getApplicationContext(), "불러오기 실패", Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
             }
         });

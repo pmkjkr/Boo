@@ -44,7 +44,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class Stu_ScheFragment extends Fragment {
     private ProgressDialog mProgressDialog;
-    AppendLog appendLog = new AppendLog();
+    AppendLog log = new AppendLog();
 
     @BindView(R.id.tv_pro_tel)
     TextView tv_pro_tel;
@@ -54,7 +54,7 @@ public class Stu_ScheFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootview = inflater.inflate(R.layout.fragment_sche, container, false);
-        ButterKnife.bind(this,rootview);
+        ButterKnife.bind(this, rootview);
 
 
 //        showProgressDialog();
@@ -88,14 +88,14 @@ public class Stu_ScheFragment extends Fragment {
     }
 
     @OnClick(R.id.tv_pro_tel)
-    void onTelClicked(){
-        ClipboardManager clipboardManager = (ClipboardManager)getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
+    void onTelClicked() {
+        ClipboardManager clipboardManager = (ClipboardManager) getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
         ClipData clipData = ClipData.newPlainText("label", tv_pro_tel.getText().toString());
         clipboardManager.setPrimaryClip(clipData);
     }
 
     @OnLongClick(R.id.tv_pro_tel)
-    boolean onLongTelClicked(){
+    boolean onLongTelClicked() {
         String pro_tel = tv_pro_tel.getText().toString();
         Intent in = new Intent(Intent.ACTION_DIAL, Uri.parse(String.format("tel:%s", pro_tel)));
         startActivity(in);
@@ -103,14 +103,14 @@ public class Stu_ScheFragment extends Fragment {
     }
 
     @OnClick(R.id.tv_pro_email)
-    void onEmailClicked(){
-        ClipboardManager clipboardManager = (ClipboardManager)getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
+    void onEmailClicked() {
+        ClipboardManager clipboardManager = (ClipboardManager) getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
         ClipData clipData = ClipData.newPlainText("label", tv_pro_email.getText().toString());
         clipboardManager.setPrimaryClip(clipData);
     }
 
     @OnLongClick(R.id.tv_pro_email)
-    boolean onEmailLongClicked(){
+    boolean onEmailLongClicked() {
         Intent it = new Intent(Intent.ACTION_SEND);
         String[] mailaddr = {tv_pro_email.getText().toString()};
         it.setType("plaine/text");
@@ -118,7 +118,6 @@ public class Stu_ScheFragment extends Fragment {
         startActivity(it);
         return true;
     }
-
 
 
     private void showProgressDialog() {
@@ -149,11 +148,6 @@ public class Stu_ScheFragment extends Fragment {
         SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "AES");
         IvParameterSpec ivSpec = new IvParameterSpec(keyBytes);
         cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
-//               BASE64Decoder decoder = new BASE64Decoder();
-//               Base64.decode(input, flags)
-//               byte [] results = cipher.doFinal(decoder.decodeBuffer(text));
-        // BASE64Decoder decoder = new BASE64Decoder();
-        // Base64.decode(input, flags)
         byte[] results = cipher.doFinal(Base64.decode(text, 0));
         return new String(results, "UTF-8");
     }
