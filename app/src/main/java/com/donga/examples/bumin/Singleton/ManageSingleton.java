@@ -8,6 +8,7 @@ public class ManageSingleton {
 
     String token;
     String managerID;
+    String pcnotis_id;
 
     public static ManageSingleton getInstance() {
         if(mInstance == null)
@@ -34,5 +35,13 @@ public class ManageSingleton {
 
     public void setManagerID(String managerID) {
         this.managerID = managerID;
+    }
+
+    public String getPcnotis_id() {
+        return pcnotis_id;
+    }
+
+    public void setPcnotis_id(String pcnotis_id) {
+        this.pcnotis_id = pcnotis_id;
     }
 }

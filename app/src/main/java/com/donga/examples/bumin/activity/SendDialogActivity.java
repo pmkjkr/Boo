@@ -1,6 +1,7 @@
 package com.donga.examples.bumin.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
@@ -36,11 +37,14 @@ public class SendDialogActivity extends Activity {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-//        Bundle bun = getIntent().getExtras();
-//        notiMessage = bun.getString("contents");
 
         setContentView(R.layout.activity_send_dialog);
         ButterKnife.bind(this);
+
+        Intent i = getIntent();
+        send_date.setText(i.getExtras().getString("date"));
+        send_title.setText(i.getExtras().getString("title"));
+        send_content.setText(i.getExtras().getString("content"));
 
     }
 }

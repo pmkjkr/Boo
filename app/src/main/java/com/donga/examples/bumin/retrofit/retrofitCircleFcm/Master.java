@@ -1,4 +1,4 @@
-package com.donga.examples.bumin.retrofit.retrofitFcm;
+package com.donga.examples.bumin.retrofit.retrofitCircleFcm;
 
 /**
  * Created by pmk on 17. 2. 9.

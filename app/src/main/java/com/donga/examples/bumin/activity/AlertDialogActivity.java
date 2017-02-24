@@ -1,6 +1,7 @@
 package com.donga.examples.bumin.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
@@ -24,6 +25,8 @@ public class AlertDialogActivity extends Activity {
     TextView tv_send;
     @BindView(R.id.tv_title)
     TextView tv_title;
+    @BindView(R.id.popup_show)
+    TextView popup_show;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +43,19 @@ public class AlertDialogActivity extends Activity {
         setContentView(R.layout.activity_alert_dialog);
         ButterKnife.bind(this);
 
-        tv_send.setText("발신자 : "+send);
-        tv_title.setText("제목 : "+title);
-        tv_popup.setText("내용 : "+notiMessage);
+        tv_send.setText("발신자 : " + send);
+        tv_title.setText("제목 : " + title);
+        tv_popup.setText("내용 : " + notiMessage);
     }
 
     @OnClick(R.id.popup_close)
-    void onCloseClicked(){
+    void onCloseClicked() {
         finish();
+    }
+
+    @OnClick(R.id.popup_show)
+    void onShowClicked() {
+        Intent i = new Intent(getApplicationContext(), WisperActivity.class);
+        startActivity(i);
     }
 }

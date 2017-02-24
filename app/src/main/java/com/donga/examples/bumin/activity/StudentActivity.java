@@ -1,6 +1,9 @@
 package com.donga.examples.bumin.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -141,9 +144,28 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
         } else if (id == R.id.nav_empty) {
             Intent intent = new Intent(getApplicationContext(), EmptyActivity.class);
             startActivity(intent);
+        } else if (id == R.id.nav_wisper) {
+            Intent intent = new Intent(getApplicationContext(), WisperActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_site) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.donga.ac.kr"));
+            startActivity(intent);
+        } else if (id == R.id.nav_noti) {
+
+        } else if (id == R.id.nav_ver) {
+
+        } else if (id == R.id.nav_help) {
+            Intent intent = new Intent(getApplicationContext(), HelpActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_logout) {
+            SharedPreferences sharedPreferences = getSharedPreferences(getResources().getString(R.string.SFLAG), Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.commit();
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_manage) {
-            Intent intent = new Intent(getApplicationContext(), ManageActivity.class);
+            Intent intent = new Intent(getApplicationContext(), ManageLoginActivity.class);
             startActivity(intent);
         }
 

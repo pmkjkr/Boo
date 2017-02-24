@@ -28,13 +28,14 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentRight="true"
-        android:src="@drawable/garbage" />
+        android:src="@drawable/garbage"
+        android:id="@+id/garbage" />
 
     <ListView
         android:id="@+id/list_member"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/manage_member_select"
+        android:layout_below="@+id/garbage"
         android:layout_marginTop="10dp"
         android:choiceMode="multipleChoice"></ListView>
 </RelativeLayout>

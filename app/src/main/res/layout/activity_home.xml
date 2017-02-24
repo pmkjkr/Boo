@@ -29,7 +29,7 @@
                     android:layout_height="wrap_content"
                     android:text="Boo"
                     android:textSize="20dp"
-                    android:textColor="#ee5b6f"
+                    android:textColor="@color/four"
                     android:textStyle="bold" />
 
             </android.support.v7.widget.Toolbar>

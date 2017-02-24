@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.donga.examples.bumin.CheckableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/check_area"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical">
     <CheckBox
         android:id="@+id/manage_member_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
         android:layout_marginRight="10dp"/>
     <TextView
         android:id="@+id/manage_member_id"
@@ -22,4 +21,4 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="김현정" />
-</LinearLayout>
+</com.donga.examples.bumin.CheckableLayout>

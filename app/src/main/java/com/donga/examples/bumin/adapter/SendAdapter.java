@@ -57,7 +57,7 @@ public class SendAdapter extends RecyclerView.Adapter<SendAdapter.ViewHolder> {
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.dateText.setText(mDataset.get(position).date);
@@ -68,6 +68,9 @@ public class SendAdapter extends RecyclerView.Adapter<SendAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), SendDialogActivity.class);
+                intent.putExtra("date", holder.dateText.getText().toString());
+                intent.putExtra("title", holder.titleText.getText().toString());
+                intent.putExtra("content", holder.contentText.getText().toString());
                 view.getContext().startActivity(intent);
             }
         });

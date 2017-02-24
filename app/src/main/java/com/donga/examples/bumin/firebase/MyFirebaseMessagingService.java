@@ -25,6 +25,7 @@ import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -32,13 +33,24 @@ import com.donga.examples.bumin.activity.AlertDialogActivity;
 import com.donga.examples.bumin.activity.FirstActivity;
 import com.donga.examples.bumin.R;
 import com.donga.examples.bumin.Singleton.PushSingleton;
+import com.donga.examples.bumin.activity.Wisper_OkDialogActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.List;
 import java.util.Map;
 
+import me.leolin.shortcutbadger.ShortcutBadger;
+
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
+//    Context context = getApplicationContext();
+//
+//    SharedPreferences sharedPreferences = context.getSharedPreferences(getResources().getString(R.string.SFLAG), Context.MODE_PRIVATE);
+//    SharedPreferences.Editor editor = sharedPreferences.edit();
+//    if(sharedPreferences.getInt("PushCount", 0) != null){
+//        int pushCount = sharedPreferences.getInt("PushCount", 0);
+//
+//    }
 
     private static final String TAG = "MyFirebaseMsgService";
 
@@ -66,13 +78,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            String from = remoteMessage.getFrom();
+
+//            editor.putInt("PushCount", );
+
             Map data = remoteMessage.getData();
+
             PushSingleton.getInstance().setmMap(data);
             Log.i("FROM SINGLETON", String.valueOf(PushSingleton.getInstance().getmMap().get("contents")));
             Log.i("FROM SINGLETON", String.valueOf(PushSingleton.getInstance().getmMap().get("category")));
             if(PushSingleton.getInstance().getmMap().get("category").equals("normal")){
-                getRunActivity();
+//                getRunActivity();
                 Bundle bun = new Bundle();
                 bun.putString("send", remoteMessage.getNotification().getTitle());
                 bun.putString("title", remoteMessage.getNotification().getBody());
@@ -85,10 +100,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 } catch (PendingIntent.CanceledException e) {
                     e.printStackTrace();
                 }
-            }else{
-
+            }else if(PushSingleton.getInstance().getmMap().get("category").equals("circle")){
+                Log.i("inMessagingService", "circle");
+                Bundle bun = new Bundle();
+                bun.putString("send", remoteMessage.getNotification().getTitle());
+                bun.putString("title", remoteMessage.getNotification().getBody());
+                bun.putString("contents", String.valueOf(PushSingleton.getInstance().getmMap().get("contents")));
+                Intent popupIntent = new Intent(getApplicationContext(), Wisper_OkDialogActivity.class);
+                popupIntent.putExtras(bun);
+                PendingIntent pie = PendingIntent.getActivity(getApplicationContext(), 0, popupIntent, PendingIntent.FLAG_ONE_SHOT);
+                try {
+                    pie.send();
+                } catch (PendingIntent.CanceledException e) {
+                    e.printStackTrace();
+                }
             }
-
 //            SharedPreferences sharedPreferences = getSharedPreferences("LOGIN3", Context.MODE_PRIVATE);
 //            SharedPreferences.Editor editor = sharedPreferences.edit();
 //            editor.putString("contents", String.valueOf(data.get("contents")));

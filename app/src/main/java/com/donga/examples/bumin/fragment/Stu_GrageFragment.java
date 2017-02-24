@@ -119,17 +119,25 @@ public class Stu_GrageFragment extends Fragment {
 
         showProgressDialog();
 
+        final long start = System.currentTimeMillis();
+
+
         //retrofit 통신
         Retrofit client = new Retrofit.Builder().baseUrl(getString(R.string.retrofit_url))
                 .addConverterFactory(GsonConverterFactory.create()).build();
         Interface_grad sche = client.create(Interface_grad.class);
         try {
+            String decryptedStuPw = Decrypt(InfoSingleton.getInstance().getStuPw(), getString(R.string.decrypt_key));
             Call<Master> call =
-                    sche.getSchedule(InfoSingleton.getInstance().getStuId(), Decrypt(InfoSingleton.getInstance().getStuPw(), getString(R.string.decrypt_key)));
+                    sche.getSchedule(InfoSingleton.getInstance().getStuId(), decryptedStuPw);
             call.enqueue(new Callback<Master>() {
                 @Override
                 public void onResponse(Call<com.donga.examples.bumin.retrofit.retrofitGrad.Master> call, Response<Master> response) {
                     if (response.body().getResult_code() == 1) {
+
+                        long end = System.currentTimeMillis();
+                        Log.i("Stu_GradeFragment", "retrofit시간:"+(end-start)/1000.0);
+
                         tv_multi.setText(response.body().getResult_body().getInfo().getMulti());
                         tv_sub.setText(response.body().getResult_body().getInfo().getSub());
                         tv_year.setText(response.body().getResult_body().getInfo().getYear());

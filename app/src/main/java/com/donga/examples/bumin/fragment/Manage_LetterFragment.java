@@ -10,12 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.donga.examples.bumin.AppendLog;
 import com.donga.examples.bumin.R;
 import com.donga.examples.bumin.Singleton.ManageSingleton;
-import com.donga.examples.bumin.retrofit.retrofitAuthLogin.Interface_authLogin;
-import com.donga.examples.bumin.retrofit.retrofitAuthLogin.Master;
-import com.donga.examples.bumin.retrofit.retrofitFcm.Interface_fcm;
+import com.donga.examples.bumin.retrofit.retrofitCircleFcm.Interface_CircleFcm;
+import com.donga.examples.bumin.retrofit.retrofitCircleFcm.Master;
+import com.donga.examples.bumin.retrofit.retrofitNormalFcm.Interface_normalFcm;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,7 +43,7 @@ public class Manage_LetterFragment extends Fragment {
     @BindView(R.id.manage_letter_send)
     CardView manage_letter_send;
 
-
+    AppendLog log = new AppendLog();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,22 +55,52 @@ public class Manage_LetterFragment extends Fragment {
 
     @OnClick(R.id.manage_letter_send)
     void onSendClick(){
-        //retrofit 통신
-        Retrofit client = new Retrofit.Builder().baseUrl(getString(R.string.retrofit_url))
-                .addConverterFactory(GsonConverterFactory.create()).build();
-        Interface_fcm fcm = client.create(Interface_fcm.class);
-        Call<com.donga.examples.bumin.retrofit.retrofitFcm.Master> call = fcm.sendFcm("bearer "+ManageSingleton.getInstance().getToken(),
-                manage_letter_name.getText().toString(), manage_letter_title.getText().toString(), manage_letter_content.getText().toString());
-        call.enqueue(new Callback<com.donga.examples.bumin.retrofit.retrofitFcm.Master>() {
-            @Override
-            public void onResponse(Call<com.donga.examples.bumin.retrofit.retrofitFcm.Master> call, Response<com.donga.examples.bumin.retrofit.retrofitFcm.Master> response) {
-                Log.i("onresponse", "done");
-            }
+        if(manage_letter_spinner.getSelectedItemPosition() == 0){
+            //일반 공지 보낼 시
+            //retrofit 통신
+            Retrofit client = new Retrofit.Builder().baseUrl(getString(R.string.retrofit_url))
+                    .addConverterFactory(GsonConverterFactory.create()).build();
+            Interface_normalFcm fcm = client.create(Interface_normalFcm.class);
+            Call<com.donga.examples.bumin.retrofit.retrofitNormalFcm.Master> call = fcm.sendFcm("bearer "+ManageSingleton.getInstance().getToken(),
+                    manage_letter_name.getText().toString(), manage_letter_title.getText().toString(), manage_letter_content.getText().toString());
+            call.enqueue(new Callback<com.donga.examples.bumin.retrofit.retrofitNormalFcm.Master>() {
+                @Override
+                public void onResponse(Call<com.donga.examples.bumin.retrofit.retrofitNormalFcm.Master> call, Response<com.donga.examples.bumin.retrofit.retrofitNormalFcm.Master> response) {
+                    Log.i("onresponse", "done");
+                }
 
-            @Override
-            public void onFailure(Call<com.donga.examples.bumin.retrofit.retrofitFcm.Master> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
+                @Override
+                public void onFailure(Call<com.donga.examples.bumin.retrofit.retrofitNormalFcm.Master> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        } else{
+            //행사참여여부 공지 보낼 시
+            //retrofit 통신
+            Retrofit client = new Retrofit.Builder().baseUrl(getString(R.string.retrofit_url))
+                    .addConverterFactory(GsonConverterFactory.create()).build();
+            Interface_CircleFcm fcm = client.create(Interface_CircleFcm.class);
+            Call<Master> call = fcm.sendFcm("bearer "+ManageSingleton.getInstance().getToken(),
+                    manage_letter_name.getText().toString(), manage_letter_title.getText().toString(), manage_letter_content.getText().toString());
+            call.enqueue(new Callback<Master>() {
+                @Override
+                public void onResponse(Call<Master> call, Response<Master> response) {
+                    if(response.body().getSuccess().equals("HTTP 요청 처리 완료")){
+                        Toast.makeText(getContext(), "전송 완료", Toast.LENGTH_SHORT);
+                    }else{
+                        log.appendLog("inLetterFragment code not matched");
+                        Toast.makeText(getContext(), "전송 실패", Toast.LENGTH_SHORT);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Master> call, Throwable t) {
+                    t.printStackTrace();
+                    log.appendLog("inLetterFragment failure");
+                    Toast.makeText(getContext(), "전송 실패", Toast.LENGTH_SHORT);
+                }
+            });
+        }
+
     }
 }

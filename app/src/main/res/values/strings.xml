@@ -4,6 +4,8 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="retrofit_url">https://dongaboomin.xyz/</string>
+    <!--<string name="retrofit_url">http://168.115.128.42/</string>-->
+
     <string name="action_settings">Settings</string>
     <string name="loading">로딩 중입니다...</string>
     <string-array name="empty_day">
@@ -34,6 +36,7 @@
         <item>20</item>
     </string-array>
     <string name="decrypt_key">key</string>
+    <string name="SFLAG">LOGIN</string>
     <string-array name="achiev_select">
         <item>전체학기성적</item>
         <item>일부학기성적</item>

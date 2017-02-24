@@ -35,12 +35,8 @@ public class MemberListViewAdapter extends BaseAdapter {
 //        checkBoxState = new boolean[listViewItemList.size()];
     }
 
-    public void allCheck(int count) {
-//        holder.s_check.setChecked(true);
-        for(int i = 0; i<count; i++){
-            
-        }
-        Log.i("allCheck", "done?");
+    public String getStuId(int position){
+        return listViewItemList.get(position).getS_id();
     }
 
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현

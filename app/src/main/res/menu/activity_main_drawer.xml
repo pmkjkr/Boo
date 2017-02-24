@@ -25,6 +25,10 @@
             android:icon="@drawable/loca"
             android:title="빈강" />
         <item
+            android:id="@+id/nav_wisper"
+            android:icon="@drawable/inter"
+            android:title="쪽지함" />
+        <item
             android:id="@+id/nav_site"
             android:icon="@drawable/inter"
             android:title="사이트" />
@@ -49,6 +53,10 @@
     <group
         android:id="@+id/manage"
         android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/help"
+            android:title="로그아웃" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/help"

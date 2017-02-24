@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
         android:text="2014"
-        android:textColor="#2d3e50"
+        android:textColor="@color/three"
         android:textSize="20dp"
         android:textStyle="bold"
         android:layout_marginTop="10dp"/>
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="1학기"
-        android:textColor="#2d3e50"
+        android:textColor="@color/three"
         android:textSize="20dp"
         android:textStyle="bold"
         android:layout_marginTop="10dp"/>

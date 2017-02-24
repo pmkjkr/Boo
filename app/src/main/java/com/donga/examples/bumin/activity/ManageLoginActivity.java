@@ -1,16 +1,22 @@
 package com.donga.examples.bumin.activity;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.donga.examples.bumin.AppendLog;
+import com.donga.examples.bumin.MinServiceClass;
 import com.donga.examples.bumin.R;
 import com.donga.examples.bumin.Singleton.ManageSingleton;
 import com.donga.examples.bumin.retrofit.retrofitAuthLogin.Interface_authLogin;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +58,10 @@ public class ManageLoginActivity extends AppCompatActivity {
             public void onResponse(Call<com.donga.examples.bumin.retrofit.retrofitAuthLogin.Master> call, Response<com.donga.examples.bumin.retrofit.retrofitAuthLogin.Master> response) {
                 ManageSingleton.getInstance().setToken(response.body().getToken());
                 ManageSingleton.getInstance().setManagerID(s_manageId.getText().toString());
+
+                startServiceMethod();
+                Log.i("ManageLoginActivity", "started");
+                serviceList();
                 Intent i = new Intent(getApplicationContext(), ManageActivity.class);
                 startActivity(i);
             }
@@ -69,4 +79,24 @@ public class ManageLoginActivity extends AppCompatActivity {
         super.onPause();
         finish();
     }
+
+    public void startServiceMethod(){
+        startService(new Intent(ManageLoginActivity.this, MinServiceClass.class));
+
+//        Intent Service = new Intent(this, MinServiceClass.class);
+//        startService(Service);
+    }
+
+    private void serviceList(){
+        /* 실행중인 service 목록 보기 */
+        ActivityManager am = (ActivityManager)getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> rs = am.getRunningServices(50);
+
+        for(int i=0; i<rs.size(); i++){
+            ActivityManager.RunningServiceInfo rsi = rs.get(i);
+            Log.d("run service","Package Name : " + rsi.service.getPackageName());
+        }
+
+    }
+
 }

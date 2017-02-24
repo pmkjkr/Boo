@@ -1,30 +1,36 @@
 package com.donga.examples.bumin.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.donga.examples.bumin.AppendLog;
 import com.donga.examples.bumin.R;
-import com.donga.examples.bumin.activity.AttendActivity;
-import com.donga.examples.bumin.activity.ManageActivity;
+import com.donga.examples.bumin.Singleton.ManageSingleton;
 import com.donga.examples.bumin.adapter.MyData_Send;
 import com.donga.examples.bumin.adapter.SendAdapter;
+import com.donga.examples.bumin.retrofit.retrofitPNormalNotis.Interface_getPNormalNotis;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by rhfoq on 2017-02-15.
  */
 public class Manage_SendFragment extends Fragment {
+    AppendLog log = new AppendLog();
+
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<MyData_Send> myDataset;
@@ -45,11 +51,36 @@ public class Manage_SendFragment extends Fragment {
         mAdapter = new SendAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
 
-        myDataset.add(new MyData_Send("2017.02.02","공지 알림","공지내용"));
-        myDataset.add(new MyData_Send("2017.02.03","공지 알림","공지내용"));
-        myDataset.add(new MyData_Send("2017.02.04","공지 알림","공지내용"));
-        myDataset.add(new MyData_Send("2017.02.05","공지 알림","공지내용"));
-        myDataset.add(new MyData_Send("2017.02.06","공지 알림","공지내용"));
+        Retrofit client = new Retrofit.Builder().baseUrl(getString(R.string.retrofit_url))
+                .addConverterFactory(GsonConverterFactory.create()).build();
+        Interface_getPNormalNotis getPNormalNotis = client.create(Interface_getPNormalNotis.class);
+        Call<com.donga.examples.bumin.retrofit.retrofitPNormalNotis.Master> call = getPNormalNotis.getPNormalNotis("bearer " + ManageSingleton.getInstance().getToken());
+        call.enqueue(new Callback<com.donga.examples.bumin.retrofit.retrofitPNormalNotis.Master>() {
+            @Override
+            public void onResponse(Call<com.donga.examples.bumin.retrofit.retrofitPNormalNotis.Master> call, Response<com.donga.examples.bumin.retrofit.retrofitPNormalNotis.Master> response) {
+                if(response.body().getResult_code() == 1){
+                    for(int i = 0; i<response.body().getResult_body().size(); i++){
+                        myDataset.add(new MyData_Send(response.body().getResult_body().get(i).getCreated_at(), response.body().getResult_body().get(i).getBody(), response.body().getResult_body().get(i).getData()));
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }else{
+                    log.appendLog("inSendFragment code not matched");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<com.donga.examples.bumin.retrofit.retrofitPNormalNotis.Master> call, Throwable t) {
+                log.appendLog("inSendFragment failure");
+                t.printStackTrace();
+            }
+        });
+
+//        myDataset.add(new MyData_Send("2017.02.02","공지 알림","공지내용"));
+//        myDataset.add(new MyData_Send("2017.02.03","공지 알림","공지내용"));
+//        myDataset.add(new MyData_Send("2017.02.04","공지 알림","공지내용"));
+//        myDataset.add(new MyData_Send("2017.02.05","공지 알림","공지내용"));
+//        myDataset.add(new MyData_Send("2017.02.06","공지 알림","공지내용"));
+
         return rootview;
     }
 

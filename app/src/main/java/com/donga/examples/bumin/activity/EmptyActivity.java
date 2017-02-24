@@ -1,9 +1,12 @@
 package com.donga.examples.bumin.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
@@ -104,8 +107,8 @@ public class EmptyActivity extends AppCompatActivity
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 int j = 0;
                 ArrayList<String> empty_clock2_list = new ArrayList<String>();
-
-                for (int i = Integer.parseInt(parent.getSelectedItem().toString()); i <= 20; i++) {
+                int selected = Integer.parseInt(parent.getSelectedItem().toString());
+                for (int i = selected; i <= 20; i++) {
                     empty_clock2_list.add(String.valueOf(i));
                     j++;
                 }
@@ -264,9 +267,28 @@ public class EmptyActivity extends AppCompatActivity
         } else if (id == R.id.nav_empty) {
             Intent intent = new Intent(getApplicationContext(), EmptyActivity.class);
             startActivity(intent);
+        } else if (id == R.id.nav_wisper) {
+            Intent intent = new Intent(getApplicationContext(), WisperActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_site) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.donga.ac.kr"));
+            startActivity(intent);
+        } else if (id == R.id.nav_noti) {
+
+        } else if (id == R.id.nav_ver) {
+
+        } else if (id == R.id.nav_help) {
+            Intent intent = new Intent(getApplicationContext(), HelpActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_logout) {
+            SharedPreferences sharedPreferences = getSharedPreferences(getResources().getString(R.string.SFLAG), Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.commit();
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_manage) {
-            Intent intent = new Intent(getApplicationContext(), ManageActivity.class);
+            Intent intent = new Intent(getApplicationContext(), ManageLoginActivity.class);
             startActivity(intent);
         }
 

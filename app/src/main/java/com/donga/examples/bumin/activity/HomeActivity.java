@@ -22,6 +22,7 @@ import com.donga.examples.bumin.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 /**
  * Created by rhfoq on 2017-02-07.
@@ -37,6 +38,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawer;
     @BindView(R.id.nav_view_home)
     NavigationView navigationView;
+
 
     @OnClick(R.id.menu_res)
     void menu_res() {
@@ -68,9 +70,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         startActivity(intent);
     }
 
-    @OnClick(R.id.menu_site)
+    @OnClick(R.id.menu_wisper)
     void menu_site() {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.donga.ac.kr"));
+        Intent intent = new Intent(getApplicationContext(), WisperActivity.class);
         startActivity(intent);
     }
 
@@ -97,10 +99,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
         }
 
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.back);
-        linearLayout.getBackground().setAlpha(90);
+//        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.back);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("LOGIN", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(getResources().getString(R.string.SFLAG), Context.MODE_PRIVATE);
         int stuID = sharedPreferences.getInt("stuID", 0);
         Log.i("HomeActivity", "" + stuID);
 
@@ -171,7 +172,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_empty) {
             Intent intent = new Intent(getApplicationContext(), EmptyActivity.class);
             startActivity(intent);
+        } else if (id == R.id.nav_wisper) {
+            Intent intent = new Intent(getApplicationContext(), WisperActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_site) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.donga.ac.kr"));
+            startActivity(intent);
         } else if (id == R.id.nav_noti) {
 
         } else if (id == R.id.nav_ver) {
@@ -179,6 +185,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_help) {
             Intent intent = new Intent(getApplicationContext(), HelpActivity.class);
             startActivity(intent);
+        } else if (id == R.id.nav_logout) {
+            SharedPreferences sharedPreferences = getSharedPreferences(getResources().getString(R.string.SFLAG), Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.commit();
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent(getApplicationContext(), ManageLoginActivity.class);
             startActivity(intent);

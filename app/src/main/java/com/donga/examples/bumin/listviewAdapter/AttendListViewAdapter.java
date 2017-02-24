@@ -57,7 +57,7 @@ public class AttendListViewAdapter extends BaseAdapter {
             holder.attend_on.setText(listViewItem.getAttend_on());
 
             String on = holder.attend_on.getText().toString();
-            if(on.equals("불참")){
+            if(on.equals("불참")||on.equals("무응답")){
                 convertView.setBackgroundColor(Color.parseColor("#D8D8D8"));
             }
 

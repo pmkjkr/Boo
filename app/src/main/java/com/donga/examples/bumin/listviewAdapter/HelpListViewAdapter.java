@@ -29,6 +29,10 @@ public class HelpListViewAdapter extends BaseAdapter {
         public ImageView micon;
     }
 
+    public String getMenuText(int position){
+        return mlistData.get(position).getHelp_text();
+    }
+
     @Override
     public int getCount() {
         return mlistData.size();

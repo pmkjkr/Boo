@@ -1,6 +1,8 @@
 package com.donga.examples.bumin.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -9,8 +11,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.donga.examples.bumin.R;
@@ -18,6 +23,7 @@ import com.donga.examples.bumin.listviewAdapter.HelpListViewAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by rhfoq on 2017-02-17.
@@ -33,6 +39,8 @@ public class HelpActivity extends AppCompatActivity implements NavigationView.On
     @BindView(R.id.list_help)
     ListView listView;
 
+    HelpListViewAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,15 +55,31 @@ public class HelpActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        HelpListViewAdapter adapter = new HelpListViewAdapter();
+        adapter = new HelpListViewAdapter();
         listView.setAdapter(adapter);
 
         adapter.addItem("문의하기", getResources().getDrawable(R.drawable.arrow));
         adapter.addItem("약관 및 정책", getResources().getDrawable(R.drawable.arrow));
         adapter.addItem("오픈소스", getResources().getDrawable(R.drawable.arrow));
         adapter.addItem("앱정보", getResources().getDrawable(R.drawable.arrow));
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(adapter.getMenuText(position).equals("문의하기")){
+                    Intent it = new Intent(Intent.ACTION_SEND);
+                    String[] mailaddr = {"npe.dongauniv@gmail.com"};
+                    it.setType("plaine/text");
+                    it.putExtra(Intent.EXTRA_EMAIL, mailaddr);
+                    startActivity(it);
+                }
+            }
+        });
     }
 
+//    @OnClick(R.id.list_help)
+//    void onListClick(){
+//    }
 
     @Override
     public void onBackPressed() {
@@ -106,13 +130,15 @@ public class HelpActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(getApplicationContext(), RoomActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_pro) {
-            Intent intent = new Intent(getApplicationContext(), ProActivity.class);
-            startActivity(intent);
+
         } else if (id == R.id.nav_stu) {
             Intent intent = new Intent(getApplicationContext(), StudentActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_empty) {
             Intent intent = new Intent(getApplicationContext(), EmptyActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_wisper) {
+            Intent intent = new Intent(getApplicationContext(), WisperActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_site) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.donga.ac.kr"));
@@ -124,8 +150,15 @@ public class HelpActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_help) {
             Intent intent = new Intent(getApplicationContext(), HelpActivity.class);
             startActivity(intent);
+        } else if (id == R.id.nav_logout) {
+            SharedPreferences sharedPreferences = getSharedPreferences(getResources().getString(R.string.SFLAG), Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.commit();
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_manage) {
-            Intent intent = new Intent(getApplicationContext(), ManageActivity.class);
+            Intent intent = new Intent(getApplicationContext(), ManageLoginActivity.class);
             startActivity(intent);
         }
 

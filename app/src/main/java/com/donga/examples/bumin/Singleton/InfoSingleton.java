@@ -8,7 +8,7 @@ import java.util.Date;
  */
 public class InfoSingleton {
     private static InfoSingleton mInstance = null;
-    private String stuId, stuPw, year;
+    private String stuId, stuPw, year, id, fromGetCircleNoticeID;
 
     public static InfoSingleton getInstance() {
         if(mInstance == null)
@@ -40,5 +40,21 @@ public class InfoSingleton {
 
     public void setYear(String year) {
         this.year = year;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getFromGetCircleNoticeID() {
+        return fromGetCircleNoticeID;
+    }
+
+    public void setFromGetCircleNoticeID(String fromGetCircleNoticeID) {
+        this.fromGetCircleNoticeID = fromGetCircleNoticeID;
     }
 }

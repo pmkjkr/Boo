@@ -11,6 +11,6 @@ import retrofit2.http.POST;
 
 public interface Interface_login {
     @FormUrlEncoded
-    @POST("donga/login")
+    @POST("/donga/login")
     Call<Master> loginUser(@Field("stuId") String stuId, @Field("stuPw") String password);
 }

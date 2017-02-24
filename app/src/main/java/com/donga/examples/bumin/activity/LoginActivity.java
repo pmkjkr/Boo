@@ -41,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
     private long backPressedTime = 0;
     AppendLog log = new AppendLog();
 
-    final String SFLAG = "LOGIN";
     @BindView(R.id.s_id)
     EditText s_id;
     @BindView(R.id.s_pw)
@@ -59,11 +58,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Master> call, Response<Master> response) {
                 if (response.body().getResult_code() == 1) {
-                    final SharedPreferences sharedPreferences = getSharedPreferences(SFLAG, Context.MODE_PRIVATE);
+                    final SharedPreferences sharedPreferences = getSharedPreferences(getResources().getString(R.string.SFLAG), Context.MODE_PRIVATE);
 
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putInt("stuID", response.body().getResult_body().getStuId());
                     editor.putInt("ID", response.body().getResult_body().getId());
+                    InfoSingleton.getInstance().setId(String.valueOf(response.body().getResult_body().getId()));
                     editor.putString("UUID", GetDevicesUUID(getApplicationContext()));
                     try {
                         editor.putString("pw", Encrypt(s_pw.getText().toString(), getString(R.string.decrypt_key)));
@@ -74,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     //Firebase push token
                     String token = FirebaseInstanceId.getInstance().getToken();
+                    Log.e("PUSH_SERVICE_TOKEN", token);
 
                     Retrofit client = new Retrofit.Builder().baseUrl(getString(R.string.retrofit_url))
                             .addConverterFactory(GsonConverterFactory.create()).build();
@@ -109,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(), "로그인 실패!", Toast.LENGTH_SHORT);
-                    log.appendLog("inLoginActivity Login code not matched");
+                    log.appendLog("inLoginActivity Att2 code not matched");
                 }
 
             }
@@ -129,36 +130,13 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(SFLAG, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(getResources().getString(R.string.SFLAG), Context.MODE_PRIVATE);
         if (sharedPreferences.contains("stuID") && sharedPreferences.contains("ID") && sharedPreferences.contains("pw")) {
             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
             startActivity(intent);
         } else {
             Toast.makeText(getApplicationContext(), "로그인해주세요", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    // MD5 복호화
-    public static String Decrypt(String text, String key) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        byte[] keyBytes = new byte[16];
-        byte[] b = key.getBytes("UTF-8");
-        int len = b.length;
-        if (len > keyBytes.length) len = keyBytes.length;
-        System.arraycopy(b, 0, keyBytes, 0, len);
-        SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "AES");
-        IvParameterSpec ivSpec = new IvParameterSpec(keyBytes);
-        cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
-
-
-//               BASE64Decoder decoder = new BASE64Decoder();
-//               Base64.decode(input, flags)
-//               byte [] results = cipher.doFinal(decoder.decodeBuffer(text));
-        // BASE64Decoder decoder = new BASE64Decoder();
-        // Base64.decode(input, flags)
-        byte[] results = cipher.doFinal(Base64.decode(text, 0));
-
-        return new String(results, "UTF-8");
     }
 
     // MD5 암호화
@@ -174,9 +152,6 @@ public class LoginActivity extends AppCompatActivity {
         cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
 
         byte[] results = cipher.doFinal(text.getBytes("UTF-8"));
-//               BASE64Encoder encoder = new BASE64Encoder();
-//               return encoder.encode(results);
-
         return Base64.encodeToString(results, 0);
     }
 

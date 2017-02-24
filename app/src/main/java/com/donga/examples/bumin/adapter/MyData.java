@@ -6,8 +6,10 @@ package com.donga.examples.bumin.adapter;
 public class MyData{
     public String date;
     public String title;
-    public MyData(String date, String title){
+    public String pcnotis_id;
+    public MyData(String date, String title, String pcnotis_id){
         this.date = date;
         this.title = title;
+        this.pcnotis_id = pcnotis_id;
     }
 }

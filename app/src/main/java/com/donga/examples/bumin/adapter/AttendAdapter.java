@@ -21,13 +21,14 @@ public class AttendAdapter extends RecyclerView.Adapter<AttendAdapter.ViewHolder
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView dateText, titleText;
+        public TextView dateText, titleText, none_pcnotis_id;
         public CardView cardview;
 
         public ViewHolder(View view) {
             super(view);
             dateText = (TextView)view.findViewById(R.id.manage_attend_date);
             titleText = (TextView)view.findViewById(R.id.manage_attend_title);
+            none_pcnotis_id = (TextView)view.findViewById(R.id.manage_attend_none_pcnotis_id);
             cardview = (CardView)view.findViewById(R.id.attend_cardview);
         }
     }
@@ -51,16 +52,18 @@ public class AttendAdapter extends RecyclerView.Adapter<AttendAdapter.ViewHolder
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.dateText.setText(mDataset.get(position).date);
         holder.titleText.setText(mDataset.get(position).title);
+        holder.none_pcnotis_id.setText(mDataset.get(position).pcnotis_id);
 
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), AttendActivity.class);
+                intent.putExtra("pnotis_id", holder.none_pcnotis_id.getText().toString());
                 view.getContext().startActivity(intent);
             }
         });

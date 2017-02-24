@@ -26,6 +26,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import me.leolin.shortcutbadger.ShortcutBadger;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,7 +34,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FirstActivity extends AppCompatActivity {
-    final String SFLAG = "LOGIN";
     public final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
 
     AppendLog log = new AppendLog();
@@ -47,6 +47,8 @@ public class FirstActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        int badgeCount = 0;
+        ShortcutBadger.applyCount(getApplicationContext(), badgeCount);
 
         //READ_PHONE_STATE 권한 체크
         if (ContextCompat.checkSelfPermission(this,
@@ -71,8 +73,6 @@ public class FirstActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
-
-                log.appendLog("permission requested");
             }
         }
     }
@@ -86,11 +86,11 @@ public class FirstActivity extends AppCompatActivity {
             if (getIntent().getExtras().getString("contents") != null) {
                 Log.i("INTENT", getIntent().getExtras().getString("contents"));
                 PushSingleton.getInstance().setmString(getIntent().getExtras().getString("contents"));
-                log.appendLog("inFirstActivity" + getIntent().getExtras().getString("contents"));
+//                log.appendLog("inFirstActivity" + getIntent().getExtras().getString("contents"));
             }
         }
 
-        final SharedPreferences sharedPreferences = getSharedPreferences(SFLAG, Context.MODE_PRIVATE);
+        final SharedPreferences sharedPreferences = getSharedPreferences(getResources().getString(R.string.SFLAG), Context.MODE_PRIVATE);
         if (sharedPreferences.contains("stuID") && sharedPreferences.contains("ID") && sharedPreferences.contains("pw")) {
 
             //retrofit 통신
@@ -102,7 +102,7 @@ public class FirstActivity extends AppCompatActivity {
                 call4 = room.loginUser(String.valueOf(sharedPreferences.getInt("stuID", 0)), Decrypt(sharedPreferences.getString("pw", ""), getString(R.string.decrypt_key)));
             } catch (Exception e) {
                 e.printStackTrace();
-                log.appendLog("inFirstActivity LOGIN FAILED");
+//                log.appendLog("inFirstActivity LOGIN FAILED");
             }
             call4.enqueue(new Callback<Master>() {
                 @Override
@@ -117,11 +117,10 @@ public class FirstActivity extends AppCompatActivity {
                             Bundle bun = new Bundle();
                             bun.putString("contents", PushSingleton.getInstance().getmString());
                             intent.putExtras(bun);
-                            log.appendLog(PushSingleton.getInstance().getmString());
                         }
                         startActivity(intent);
                     } else {
-                        log.appendLog("inFirstActivity Login code not matched move to LoginActivity");
+//                        log.appendLog("inFirstActivity Att2 code not matched move to LoginActivity");
                         moveToLoginActivity();
                     }
                 }
@@ -130,7 +129,7 @@ public class FirstActivity extends AppCompatActivity {
                 public void onFailure(Call<Master> call, Throwable t) {
                     //retrofit 통신 실패시 SharedPreferences 삭제 후 LoginActivity로 이동
                     t.printStackTrace();
-                    log.appendLog("inFirstActivity AUTO LOGIN FAILED");
+//                    log.appendLog("inFirstActivity AUTO LOGIN FAILED");
                     moveToLoginActivity();
                 }
             });
@@ -138,7 +137,7 @@ public class FirstActivity extends AppCompatActivity {
 
         } else {
             //기기에 저장된 SharedPreferences 없으면 LoginActivity로 이동
-            log.appendLog("inFirstActivity no sharedPreferences move to LoginActivity");
+//            log.appendLog("inFirstActivity no sharedPreferences move to LoginActivity");
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
         }
@@ -153,7 +152,7 @@ public class FirstActivity extends AppCompatActivity {
                     Log.i("requestPermissions", "done");
                 } else {
                     Toast.makeText(this, "권한 사용에 동의해주셔야 이용이 가능합니다.", Toast.LENGTH_SHORT);
-                    log.appendLog("permission denied");
+//                    log.appendLog("permission denied");
                     finish();
                 }
             }
@@ -175,9 +174,10 @@ public class FirstActivity extends AppCompatActivity {
     }
 
     public void moveToLoginActivity() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SFLAG, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(getResources().getString(R.string.SFLAG), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
+        editor.commit();
 
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(intent);
