@@ -1,5 +1,6 @@
 package com.donga.examples.bumin.activity;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,7 +18,10 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.donga.examples.bumin.MinServiceClass;
 import com.donga.examples.bumin.R;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -180,7 +184,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
         } else if (id == R.id.nav_noti) {
 
+            startServiceMethod();
+
         } else if (id == R.id.nav_ver) {
+
+            serviceList();
+            stopServiceMethod();
 
         } else if (id == R.id.nav_help) {
             Intent intent = new Intent(getApplicationContext(), HelpActivity.class);
@@ -202,5 +211,31 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_home);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void startServiceMethod(){
+//        startService(new Intent(ManageLoginActivity.this, MinServiceClass.class));
+
+        Intent Service = new Intent(this, MinServiceClass.class);
+        startService(Service);
+        Log.i("startServiceMethod", "started?");
+    }
+
+    public void stopServiceMethod(){
+        Intent Service = new Intent(this, MinServiceClass.class);
+        stopService(Service);
+        Log.i("stopServiceMethod", "stopped?");
+    }
+
+    private void serviceList(){
+        /* 실행중인 service 목록 보기 */
+        ActivityManager am = (ActivityManager)getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> rs = am.getRunningServices(50);
+
+        for(int i=0; i<rs.size(); i++){
+            ActivityManager.RunningServiceInfo rsi = rs.get(i);
+            Log.d("run service","Package Name : " + rsi.service.getPackageName());
+        }
+
     }
 }

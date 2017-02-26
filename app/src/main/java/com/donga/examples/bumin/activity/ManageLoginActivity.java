@@ -59,9 +59,7 @@ public class ManageLoginActivity extends AppCompatActivity {
                 ManageSingleton.getInstance().setToken(response.body().getToken());
                 ManageSingleton.getInstance().setManagerID(s_manageId.getText().toString());
 
-                startServiceMethod();
                 Log.i("ManageLoginActivity", "started");
-                serviceList();
                 Intent i = new Intent(getApplicationContext(), ManageActivity.class);
                 startActivity(i);
             }
@@ -80,23 +78,5 @@ public class ManageLoginActivity extends AppCompatActivity {
         finish();
     }
 
-    public void startServiceMethod(){
-        startService(new Intent(ManageLoginActivity.this, MinServiceClass.class));
-
-//        Intent Service = new Intent(this, MinServiceClass.class);
-//        startService(Service);
-    }
-
-    private void serviceList(){
-        /* 실행중인 service 목록 보기 */
-        ActivityManager am = (ActivityManager)getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningServiceInfo> rs = am.getRunningServices(50);
-
-        for(int i=0; i<rs.size(); i++){
-            ActivityManager.RunningServiceInfo rsi = rs.get(i);
-            Log.d("run service","Package Name : " + rsi.service.getPackageName());
-        }
-
-    }
 
 }

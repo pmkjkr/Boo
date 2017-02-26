@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.donga.examples.bumin.AppendLog;
+import com.donga.examples.bumin.Singleton.DateSingleton;
 import com.donga.examples.bumin.fragment.CalendarFragment;
 import com.donga.examples.bumin.R;
 import com.donga.examples.bumin.retrofit.retrofitMeal.Interface_meal;
@@ -49,7 +50,7 @@ public class ResActivity extends AppCompatActivity
     AppendLog log = new AppendLog();
 
     private ProgressDialog mProgressDialog;
-    public static int count = 0;
+    public int count = 0;
 
     @BindView(R.id.toolbar_res)
     Toolbar toolbar;
@@ -93,13 +94,13 @@ public class ResActivity extends AppCompatActivity
         retrofit(now);
 
         date_text.setText(now);
-        date_text.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment newFragment = new CalendarFragment();
-                newFragment.show(getSupportFragmentManager(), "Date Picker");
-            }
-        });
+//        date_text.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                DialogFragment newFragment = new CalendarFragment();
+//                newFragment.show(getSupportFragmentManager(), "Date Picker");
+//            }
+//        });
 
         pre_res.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,9 +109,9 @@ public class ResActivity extends AppCompatActivity
 
                 Calendar cal = Calendar.getInstance();
                 cal.add(Calendar.DATE, count); // +1은 내일
+
                 SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
                 String pre = date.format(cal.getTime());
-                Log.i("pre", pre);
                 retrofit(pre);
                 date_text.setText(pre);
             }
@@ -122,9 +123,9 @@ public class ResActivity extends AppCompatActivity
 
                 Calendar cal = Calendar.getInstance();
                 cal.add(Calendar.DATE, count); // +1은 내일
+
                 SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
                 String next = date.format(cal.getTime());
-                Log.i("next", next);
 
                 retrofit(next);
                 date_text.setText(next);
@@ -243,8 +244,6 @@ public class ResActivity extends AppCompatActivity
                     gang.setMovementMethod(LinkMovementMethod.getInstance());
 
                     hideProgressDialog();
-
-                    long end2 = System.currentTimeMillis();
                 } else {
                     log.appendLog("inResActivity code not matched");
                     hideProgressDialog();

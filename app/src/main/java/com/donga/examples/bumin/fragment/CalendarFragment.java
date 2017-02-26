@@ -57,21 +57,21 @@ public class CalendarFragment extends DialogFragment implements DatePickerDialog
         if (month < 10 && date < 10) {
             String new_month = "0" + (month + 1);
             String new_day = "0" + date;
-            String stringOfDate = year + "년 " + new_month + "월 " + new_day + "일";
+            String stringOfDate = year + "-" + new_month + "-" + new_day;
             DateSingleton.getInstance().setmString(year + "-" + new_month + "-" + new_day);
             textView.setText(stringOfDate);
         } else if (month >= 10 && date < 10) {
             String new_day = "0" + date;
-            String stringOfDate = year + "년 " + (month + 1) + "월 " + new_day + "일";
+            String stringOfDate = year + "-" + (month + 1) + "-" + new_day;
             DateSingleton.getInstance().setmString(year + "-" + (month + 1) + "-" + new_day);
             textView.setText(stringOfDate);
         } else if (month < 10 && date >= 10) {
             String new_month = "0" + (month + 1);
-            String stringOfDate = year + "년 " + new_month + "월 " + date + "일";
+            String stringOfDate = year + "-" + new_month + "-" + date;
             DateSingleton.getInstance().setmString(year + "-" + new_month + "-" + date);
             textView.setText(stringOfDate);
         } else {
-            String stringOfDate = year + "년 " + (month + 1) + "월 " + date + "일";
+            String stringOfDate = year + "-" + (month + 1) + "-" + date;
             DateSingleton.getInstance().setmString(year + "-" + (month + 1) + "-" + date);
             textView.setText(stringOfDate);
         }
